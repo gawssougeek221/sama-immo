@@ -22,74 +22,6 @@ import { ArgentLoopInfiniteSlider } from '@/components/ui/argent-loop-infinite-s
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 // ─── DATA ──────────────────────────────────────────────────
-const properties = [
-  {
-    id: 1,
-    name: 'Villa Luxe Almadies',
-    price: '850 000 000',
-    currency: 'CFA',
-    bedrooms: 5,
-    bathrooms: 4,
-    area: 520,
-    description:
-      "Magnifique villa vue océan aux Almadies, avec terrasse panoramique, piscine chauffée et jardin paysager. Construction premium avec finitions haut de gamme, sécurité 24/7 et accès privé à la plage.",
-    image: '/villa-ngor.jpg',
-    location: 'Almadies, Dakar',
-  },
-  {
-    id: 2,
-    name: 'Penthouse Plateau',
-    price: '650 000 000',
-    currency: 'CFA',
-    bedrooms: 3,
-    bathrooms: 2,
-    area: 350,
-    description:
-      "Élégant penthouse au cœur du Plateau avec vue imprenable sur l'Atlantique. Terrasse rooftop privée, finitions marbre et bois précieux.",
-    image: '/penthouse-plateau.jpg',
-    location: 'Plateau, Dakar',
-  },
-  {
-    id: 3,
-    name: 'Résidence Mermoz',
-    price: '520 000 000',
-    currency: 'CFA',
-    bedrooms: 3,
-    bathrooms: 2,
-    area: 300,
-    description:
-      'Appartement meublé de standing à Mermoz dans un quartier résidentiel prisé. Cuisine américaine équipée, espaces verts paysagers, parking couvert.',
-    image: '/residence-mermoz.jpg',
-    location: 'Mermoz, Dakar',
-  },
-  {
-    id: 4,
-    name: 'Villa Prestige Almadies',
-    price: '980 000 000',
-    currency: 'CFA',
-    bedrooms: 6,
-    bathrooms: 5,
-    area: 680,
-    description:
-      "Villa prestigieuse aux Almadies avec vue mer, piscine à débordement, jardin tropical et dépendance. Finitions luxueuses, domotique intégrée.",
-    image: '/villa-almadies.jpg',
-    location: 'Almadies, Dakar',
-  },
-  {
-    id: 5,
-    name: 'Appartement Plateau',
-    price: '380 000 000',
-    currency: 'CFA',
-    bedrooms: 2,
-    bathrooms: 1,
-    area: 180,
-    description:
-      "Appartement moderne au Plateau, lumineux et climatisé. Proche des commerces et du centre d'affaires, idéal pour investissement locatif.",
-    image: '/appartement-plateau.jpg',
-    location: 'Plateau, Dakar',
-  },
-]
-
 const stats = [
   { value: 1200, suffix: '+', label: 'Propriétés Vendues', icon: Diamond, hoverColor: '#10B981' },   // Emerald
   { value: 25, suffix: '', label: "Ans d'Excellence", icon: Clock, hoverColor: '#F59E0B' },        // Amber
@@ -540,28 +472,7 @@ function MarqueeBand() {
 // ─── PROPERTY SECTION — ARGENT LOOP INFINITE SLIDER ───────
 function PropertySection() {
   return (
-    <section
-      id="proprietes"
-      className="relative"
-    >
-      {/* Section header overlay */}
-      <div className="property-section-header">
-        <div className="font-sans text-[10px] tracking-[0.5em] uppercase text-gold mb-2">
-          Collection
-        </div>
-        <h2 className="font-serif text-3xl lg:text-5xl font-bold text-cream">
-          Nos Propriétés
-        </h2>
-        <div className="w-12 h-px bg-gold mt-3" />
-      </div>
-
-      {/* Scroll hint */}
-      <div className="property-scroll-hint">
-        <div className="property-scroll-hint-line" />
-        <span className="property-scroll-hint-text">Scroll</span>
-      </div>
-
-      {/* Infinite slider */}
+    <section id="proprietes">
       <ArgentLoopInfiniteSlider />
     </section>
   )

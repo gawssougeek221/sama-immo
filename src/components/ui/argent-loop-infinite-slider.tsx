@@ -1,5 +1,9 @@
 "use client";
 import * as React from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface PropertyData {
   title: string;
@@ -83,317 +87,207 @@ const PROPERTY_DATA: PropertyData[] = [
   },
 ];
 
-const CONFIG = {
-  SCROLL_SPEED: 0.75,
-  LERP_FACTOR: 0.05,
-  BUFFER_SIZE: 5,
-  MAX_VELOCITY: 150,
-  SNAP_DURATION: 500,
-};
-
-const lerp = (start: number, end: number, factor: number) =>
-  start + (end - start) * factor;
-
-const getPropertyData = (index: number) => {
-  const i =
-    ((Math.abs(index) % PROPERTY_DATA.length) + PROPERTY_DATA.length) %
-    PROPERTY_DATA.length;
-  return PROPERTY_DATA[i];
-};
-
-const getPropertyNumber = (index: number) => {
-  return (
-    ((Math.abs(index) % PROPERTY_DATA.length) + PROPERTY_DATA.length) %
-      PROPERTY_DATA.length +
-    1
-  )
-    .toString()
-    .padStart(2, "0");
-};
-
 export function ArgentLoopInfiniteSlider() {
-  const [visibleRange, setVisibleRange] = React.useState({
-    min: -CONFIG.BUFFER_SIZE,
-    max: CONFIG.BUFFER_SIZE,
-  });
-
-  const state = React.useRef({
-    currentY: 0,
-    targetY: 0,
-    isDragging: false,
-    isSnapping: false,
-    snapStart: { time: 0, y: 0, target: 0 },
-    lastScrollTime: Date.now(),
-    dragStart: { y: 0, scrollY: 0 },
-    projectHeight: 0,
-    minimapHeight: 280,
-  });
-
-  const projectsRef = React.useRef<Map<number, HTMLDivElement>>(new Map());
-  const minimapRef = React.useRef<Map<number, HTMLDivElement>>(new Map());
-  const infoRef = React.useRef<Map<number, HTMLDivElement>>(new Map());
-  const requestRef = React.useRef<number>();
+  const sectionRef = React.useRef<HTMLElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const renderedRange = React.useRef({
-    min: -CONFIG.BUFFER_SIZE,
-    max: CONFIG.BUFFER_SIZE,
-  });
+  const projectRefs = React.useRef<Map<number, HTMLDivElement>>(new Map());
+  const minimapImgRefs = React.useRef<Map<number, HTMLDivElement>>(new Map());
+  const minimapInfoRefs = React.useRef<Map<number, HTMLDivElement>>(new Map());
+  const progressRef = React.useRef(0);
+  const currentIndexRef = React.useRef(0);
+  const [activeIndex, setActiveIndex] = React.useState(0);
 
-  const updateParallax = (
-    img: HTMLImageElement | null,
-    scroll: number,
-    index: number,
-    height: number
-  ) => {
-    if (!img) return;
-    if (!img.dataset.parallaxCurrent) {
-      img.dataset.parallaxCurrent = "0";
-    }
-    let current = parseFloat(img.dataset.parallaxCurrent);
-    const target = (-scroll - index * height) * 0.2;
-    current = lerp(current, target, 0.1);
-    if (Math.abs(current - target) > 0.01) {
-      img.style.transform = `translateY(${current}px) scale(1.5)`;
-      img.dataset.parallaxCurrent = current.toString();
-    }
-  };
-
-  const updateSnap = () => {
-    const s = state.current;
-    const progress = Math.min(
-      (Date.now() - s.snapStart.time) / CONFIG.SNAP_DURATION,
-      1
-    );
-    const eased = 1 - Math.pow(1 - progress, 3);
-    s.targetY = s.snapStart.y + (s.snapStart.target - s.snapStart.y) * eased;
-    if (progress >= 1) s.isSnapping = false;
-  };
-
-  const snapToProject = () => {
-    const s = state.current;
-    const current = Math.round(-s.targetY / s.projectHeight);
-    const target = -current * s.projectHeight;
-    s.isSnapping = true;
-    s.snapStart = {
-      time: Date.now(),
-      y: s.targetY,
-      target: target,
-    };
-  };
-
-  const updatePositions = () => {
-    const s = state.current;
-    const minimapY = (s.currentY * s.minimapHeight) / s.projectHeight;
-
-    projectsRef.current.forEach((el, index) => {
-      const y = index * s.projectHeight + s.currentY;
-      el.style.transform = `translateY(${y}px)`;
-      const img = el.querySelector("img");
-      updateParallax(img, s.currentY, index, s.projectHeight);
-    });
-
-    minimapRef.current.forEach((el, index) => {
-      const y = index * s.minimapHeight + minimapY;
-      el.style.transform = `translateY(${y}px)`;
-      const img = el.querySelector("img");
-      if (img) {
-        updateParallax(img, minimapY, index, s.minimapHeight);
-      }
-    });
-
-    infoRef.current.forEach((el, index) => {
-      const y = index * s.minimapHeight + minimapY;
-      el.style.transform = `translateY(${y}px)`;
-    });
-  };
-
-  const animate = () => {
-    const s = state.current;
-    const now = Date.now();
-
-    if (!s.isSnapping && !s.isDragging && now - s.lastScrollTime > 100) {
-      const snapPoint =
-        -Math.round(-s.targetY / s.projectHeight) * s.projectHeight;
-      if (Math.abs(s.targetY - snapPoint) > 1) snapToProject();
-    }
-
-    if (s.isSnapping) updateSnap();
-    if (!s.isDragging) {
-      s.currentY += (s.targetY - s.currentY) * CONFIG.LERP_FACTOR;
-    }
-
-    updatePositions();
-  };
-
-  const animationLoop = () => {
-    animate();
-    const s = state.current;
-    const currentIndex = Math.round(-s.targetY / s.projectHeight);
-    const min = currentIndex - CONFIG.BUFFER_SIZE;
-    const max = currentIndex + CONFIG.BUFFER_SIZE;
-
-    if (min !== renderedRange.current.min || max !== renderedRange.current.max) {
-      renderedRange.current = { min, max };
-      setVisibleRange({ min, max });
-    }
-
-    requestRef.current = requestAnimationFrame(animationLoop);
-  };
+  const totalProperties = PROPERTY_DATA.length;
 
   React.useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const section = sectionRef.current;
+    if (!section) return;
 
-    state.current.projectHeight = window.innerHeight;
+    // Each property gets 1 viewport height of scroll distance
+    const scrollDistance = window.innerHeight * totalProperties;
 
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const s = state.current;
-      s.isSnapping = false;
-      s.lastScrollTime = Date.now();
-      const delta = Math.max(
-        Math.min(e.deltaY * CONFIG.SCROLL_SPEED, CONFIG.MAX_VELOCITY),
-        -CONFIG.MAX_VELOCITY
-      );
-      s.targetY -= delta;
-    };
+    const trigger = ScrollTrigger.create({
+      trigger: section,
+      start: "top top",
+      end: () => `+=${scrollDistance}`,
+      pin: true,
+      anticipatePin: 1,
+      scrub: 1,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        progressRef.current = progress;
 
-    const onTouchStart = (e: TouchEvent) => {
-      const s = state.current;
-      s.isDragging = true;
-      s.isSnapping = false;
-      s.dragStart = { y: e.touches[0].clientY, scrollY: s.targetY };
-      s.lastScrollTime = Date.now();
-    };
+        // Calculate which property is active
+        const rawIndex = progress * (totalProperties - 1);
+        const index = Math.round(rawIndex);
+        if (index !== currentIndexRef.current) {
+          currentIndexRef.current = index;
+          setActiveIndex(index);
+        }
 
-    const onTouchMove = (e: TouchEvent) => {
-      const s = state.current;
-      if (!s.isDragging) return;
-      s.targetY =
-        s.dragStart.scrollY + (e.touches[0].clientY - s.dragStart.y) * 1.5;
-      s.lastScrollTime = Date.now();
-    };
+        // Update project positions
+        projectRefs.current.forEach((el, i) => {
+          const offset = (i - rawIndex);
+          const y = offset * window.innerHeight;
+          const opacity = Math.abs(offset) < 0.5 ? 1 : Math.max(0, 1 - Math.abs(offset) * 1.5);
+          const scale = Math.abs(offset) < 0.5 ? 1 : 0.95;
+          el.style.transform = `translateY(${y}px) scale(${scale})`;
+          el.style.opacity = String(opacity);
 
-    const onTouchEnd = () => {
-      state.current.isDragging = false;
-    };
+          // Parallax on images
+          const img = el.querySelector(".project-parallax-img") as HTMLElement | null;
+          if (img) {
+            const parallaxY = offset * -0.15 * window.innerHeight;
+            img.style.transform = `translateY(${parallaxY}px) scale(1.5)`;
+          }
+        });
+
+        // Update minimap positions
+        minimapImgRefs.current.forEach((el, i) => {
+          const offset = (i - rawIndex);
+          const y = offset * 280;
+          el.style.transform = `translateY(${y}px)`;
+
+          const img = el.querySelector("img") as HTMLElement | null;
+          if (img) {
+            const parallaxY = offset * -0.1 * 280;
+            img.style.transform = `translateY(${parallaxY}px) scale(1.5)`;
+          }
+        });
+
+        minimapInfoRefs.current.forEach((el, i) => {
+          const offset = (i - rawIndex);
+          const y = offset * 280;
+          el.style.transform = `translateY(${y}px)`;
+        });
+      },
+    });
 
     const onResize = () => {
-      state.current.projectHeight = window.innerHeight;
-      if (container) {
-        container.style.height = `${window.innerHeight}px`;
-      }
+      ScrollTrigger.refresh();
     };
-
-    container.addEventListener("wheel", onWheel, { passive: false });
-    container.addEventListener("touchstart", onTouchStart);
-    container.addEventListener("touchmove", onTouchMove);
-    container.addEventListener("touchend", onTouchEnd);
     window.addEventListener("resize", onResize);
 
-    onResize();
-    requestRef.current = requestAnimationFrame(animationLoop);
-
     return () => {
-      container.removeEventListener("wheel", onWheel);
-      container.removeEventListener("touchstart", onTouchStart);
-      container.removeEventListener("touchmove", onTouchMove);
-      container.removeEventListener("touchend", onTouchEnd);
+      trigger.kill();
       window.removeEventListener("resize", onResize);
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, []);
-
-  const indices = [];
-  for (let i = visibleRange.min; i <= visibleRange.max; i++) {
-    indices.push(i);
-  }
+  }, [totalProperties]);
 
   return (
-    <div className="parallax-container" ref={containerRef}>
+    <section
+      ref={sectionRef}
+      className="relative w-full h-screen overflow-hidden bg-noir"
+    >
+      {/* Section header overlay */}
+      <div className="property-section-header">
+        <div className="font-sans text-[10px] tracking-[0.5em] uppercase text-gold mb-2">
+          Collection
+        </div>
+        <h2 className="font-serif text-3xl lg:text-5xl font-bold text-cream">
+          Nos Propriétés
+        </h2>
+        <div className="w-12 h-px bg-gold mt-3" />
+      </div>
+
+      {/* Progress counter */}
+      <div className="property-progress-counter">
+        <span className="property-progress-current">
+          {String(activeIndex + 1).padStart(2, "0")}
+        </span>
+        <span className="property-progress-separator">/</span>
+        <span className="property-progress-total">
+          {String(totalProperties).padStart(2, "0")}
+        </span>
+      </div>
+
+      {/* Scroll hint */}
+      <div className="property-scroll-hint">
+        <div className="property-scroll-hint-line" />
+        <span className="property-scroll-hint-text">Scroll</span>
+      </div>
+
       {/* Main project images — full viewport */}
       <ul className="project-list">
-        {indices.map((i) => {
-          const data = getPropertyData(i);
-          const num = getPropertyNumber(i);
-          return (
-            <div
-              key={i}
-              className="project"
-              ref={(el) => {
-                if (el) projectsRef.current.set(i, el);
-                else projectsRef.current.delete(i);
-              }}
-            >
-              <img src={data.image} alt={data.title} />
-              {/* Overlay gradient */}
-              <div className="project-overlay" />
-              {/* Property info on image */}
-              <div className="project-info">
-                <span className="project-number">{num}</span>
-                <span className="project-category">{data.category}</span>
-                <h3 className="project-title">{data.title}</h3>
-                <div className="project-price">
-                  <span className="project-price-value">{data.price}</span>
-                  <span className="project-price-currency">{data.currency}</span>
-                </div>
-                <span className="project-location">{data.location}</span>
+        {PROPERTY_DATA.map((data, i) => (
+          <div
+            key={i}
+            className="project"
+            ref={(el) => {
+              if (el) projectRefs.current.set(i, el);
+              else projectRefs.current.delete(i);
+            }}
+            style={{
+              opacity: i === 0 ? 1 : 0,
+            }}
+          >
+            <img
+              className="project-parallax-img"
+              src={data.image}
+              alt={data.title}
+            />
+            {/* Overlay gradient */}
+            <div className="project-overlay" />
+            {/* Property info on image */}
+            <div className="project-info">
+              <span className="project-number">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="project-category">{data.category}</span>
+              <h3 className="project-title">{data.title}</h3>
+              <div className="project-price">
+                <span className="project-price-value">{data.price}</span>
+                <span className="project-price-currency">{data.currency}</span>
               </div>
+              <span className="project-location">{data.location}</span>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </ul>
 
       {/* Minimap sidebar */}
       <div className="minimap">
         <div className="minimap-wrapper">
           <div className="minimap-img-preview">
-            {indices.map((i) => {
-              const data = getPropertyData(i);
-              return (
-                <div
-                  key={i}
-                  className="minimap-img-item"
-                  ref={(el) => {
-                    if (el) minimapRef.current.set(i, el);
-                    else minimapRef.current.delete(i);
-                  }}
-                >
-                  <img src={data.image} alt={data.title} />
-                </div>
-              );
-            })}
+            {PROPERTY_DATA.map((data, i) => (
+              <div
+                key={i}
+                className={`minimap-img-item ${i === activeIndex ? "minimap-img-item--active" : ""}`}
+                ref={(el) => {
+                  if (el) minimapImgRefs.current.set(i, el);
+                  else minimapImgRefs.current.delete(i);
+                }}
+              >
+                <img src={data.image} alt={data.title} />
+              </div>
+            ))}
           </div>
           <div className="minimap-info-list">
-            {indices.map((i) => {
-              const data = getPropertyData(i);
-              const num = getPropertyNumber(i);
-              return (
-                <div
-                  key={i}
-                  className="minimap-item-info"
-                  ref={(el) => {
-                    if (el) infoRef.current.set(i, el);
-                    else infoRef.current.delete(i);
-                  }}
-                >
-                  <div className="minimap-item-info-row">
-                    <p className="minimap-num">{num}</p>
-                    <p className="minimap-title">{data.title}</p>
-                  </div>
-                  <div className="minimap-item-info-row">
-                    <p className="minimap-category">{data.category}</p>
-                    <p className="minimap-year">{data.location}</p>
-                  </div>
-                  <div className="minimap-item-info-row">
-                    <p className="minimap-desc">{data.description}</p>
-                  </div>
+            {PROPERTY_DATA.map((data, i) => (
+              <div
+                key={i}
+                className={`minimap-item-info ${i === activeIndex ? "minimap-item-info--active" : ""}`}
+                ref={(el) => {
+                  if (el) minimapInfoRefs.current.set(i, el);
+                  else minimapInfoRefs.current.delete(i);
+                }}
+              >
+                <div className="minimap-item-info-row">
+                  <p className="minimap-num">{String(i + 1).padStart(2, "0")}</p>
+                  <p className="minimap-title">{data.title}</p>
                 </div>
-              );
-            })}
+                <div className="minimap-item-info-row">
+                  <p className="minimap-category">{data.category}</p>
+                  <p className="minimap-year">{data.location}</p>
+                </div>
+                <div className="minimap-item-info-row">
+                  <p className="minimap-desc">{data.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

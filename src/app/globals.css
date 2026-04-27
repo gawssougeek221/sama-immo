@@ -575,6 +575,44 @@ body {
   }
 }
 
+/* ─── Property Progress Counter ─────────────────────────── */
+.property-progress-counter {
+  position: absolute;
+  top: 32px;
+  right: 400px;
+  z-index: 20;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-bodoni);
+}
+
+@media (max-width: 1024px) {
+  .property-progress-counter {
+    right: 40px;
+  }
+}
+
+.property-progress-current {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #FAFAF9;
+  line-height: 1;
+}
+
+.property-progress-separator {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: rgba(202, 138, 4, 0.4);
+  margin: 0 2px;
+}
+
+.property-progress-total {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: rgba(214, 211, 209, 0.3);
+}
+
 .property-scroll-hint {
   position: absolute;
   bottom: 32px;
@@ -606,6 +644,19 @@ body {
   .property-scroll-hint {
     left: 50%;
   }
+}
+
+/* ─── Minimap Active States ──────────────────────────────── */
+.minimap-img-item--active {
+  border: 1px solid rgba(202, 138, 4, 0.3);
+}
+
+.minimap-item-info--active .minimap-title {
+  color: #CA8A04;
+}
+
+.minimap-item-info--active .minimap-num {
+  color: rgba(202, 138, 4, 0.8);
 }
 
 /* ═══════════════════════════════════════════════════════════════
