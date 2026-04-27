@@ -18,7 +18,7 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "LuxeProperty — Propriétés d'Exception à Dakar",
+  title: "SAMA IMMO — Propriétés d'Exception à Dakar",
   description:
     "Immobilier de luxe à Dakar, Sénégal. Villas, penthouses et résidences premium dans les quartiers les plus prestigieux.",
   keywords: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     "penthouse",
     "propriété",
   ],
-  authors: [{ name: "LuxeProperty" }],
+  authors: [{ name: "SAMA IMMO" }],
   icons: {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },

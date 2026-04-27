@@ -344,17 +344,17 @@ body {
 
 .nav-logo-text {
   font-family: var(--font-bodoni);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   color: #FAFAF9;
 }
 
 .nav-logo-accent {
   font-family: var(--font-jost);
-  font-size: 0.65rem;
-  font-weight: 400;
-  letter-spacing: 0.35em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: #CA8A04;
   border-left: 1px solid rgba(202, 138, 4, 0.3);

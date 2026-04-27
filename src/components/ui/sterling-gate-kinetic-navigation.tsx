@@ -168,8 +168,8 @@ export function Component() {
             <div className="container is--full">
               <nav className="nav-row">
                 <a href="#" aria-label="home" className="nav-logo-row w-inline-block">
-                  <span className="nav-logo-text">LUXE</span>
-                  <span className="nav-logo-accent">PROPERTY</span>
+                  <span className="nav-logo-text">SAMA</span>
+                  <span className="nav-logo-accent">IMMO</span>
                 </a>
                 <div className="nav-row__right">
                   {/* Single unified menu toggle button */}

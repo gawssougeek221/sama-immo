@@ -899,7 +899,7 @@ function TestimonialsSection() {
   // Testimonials data with Unsplash avatar images
   const columnTestimonials = [
     {
-      text: "LuxeProperty a trouvé la villa de nos rêves aux Almadies en moins de deux semaines. Un service irréprochable, une attention aux détails remarquable.",
+      text: "SAMA IMMO a trouvé la villa de nos rêves aux Almadies en moins de deux semaines. Un service irréprochable, une attention aux détails remarquable.",
       image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=80&h=80&fit=crop&crop=face",
       name: "Aminata Diallo",
       role: "Avocate",
@@ -911,7 +911,7 @@ function TestimonialsSection() {
       role: "Directeur d'entreprise",
     },
     {
-      text: "Grâce à LuxeProperty, nous avons découvert une résidence exceptionnelle à Mermoz. L'équipe est à l'écoute et d'un conseil avisé.",
+      text: "Grâce à SAMA IMMO, nous avons découvert une résidence exceptionnelle à Mermoz. L'équipe est à l'écoute et d'un conseil avisé.",
       image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=face",
       name: "Fatou Sow",
       role: "Médecin",
@@ -929,7 +929,7 @@ function TestimonialsSection() {
       role: "Avocate d'affaires",
     },
     {
-      text: "J'ai investi dans trois propriétés grâce à LuxeProperty. Chaque fois, le retour sur investissement a dépassé mes attentes les plus optimistes.",
+      text: "J'ai investi dans trois propriétés grâce à SAMA IMMO. Chaque fois, le retour sur investissement a dépassé mes attentes les plus optimistes.",
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
       name: "Oumar Sy",
       role: "Investisseur immobilier",
@@ -941,7 +941,7 @@ function TestimonialsSection() {
       role: "Chef d'entreprise",
     },
     {
-      text: "Notre villa à Ngor est un bijou. LuxeProperty a su capturer notre vision et traduire nos envies en une propriété qui nous ressemble véritablement.",
+      text: "Notre villa à Ngor est un bijou. SAMA IMMO a su capturer notre vision et traduire nos envies en une propriété qui nous ressemble véritablement.",
       image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=80&h=80&fit=crop&crop=face",
       name: "Philippe Leclerc",
       role: "Consul honoraire",
@@ -1160,7 +1160,7 @@ function ContactSection() {
               {
                 icon: Mail,
                 title: 'Email',
-                value: 'contact@luxeproperty.sn',
+                value: 'contact@sammaimmo.sn',
                 sub: 'Réponse sous 24h',
                 accent: '#3B82F6',
               },
@@ -1226,7 +1226,7 @@ function ContactSection() {
                 &ldquo;L&apos;excellence<br />est un détail.&rdquo;
               </div>
               <div className="font-sans text-[10px] tracking-[0.3em] uppercase text-warm-gray/20 mt-3">
-                — LuxeProperty
+                — SAMA IMMO
               </div>
             </div>
           </div>
@@ -1353,7 +1353,7 @@ function Footer() {
             <div className="flex items-center gap-2 mb-4">
               <Diamond size={20} className="text-gold" />
               <span className="font-serif text-xl font-bold text-cream">
-                Luxe<span className="text-gold">Property</span>
+                SAMA <span className="text-gold">IMMO</span>
               </span>
             </div>
             <p className="font-sans text-sm text-warm-gray/50 leading-relaxed">
@@ -1410,7 +1410,7 @@ function Footer() {
               </li>
               <li className="flex items-center gap-2 font-sans text-sm text-warm-gray/50">
                 <Mail size={12} className="text-gold/50" />
-                contact@luxeproperty.sn
+                contact@sammaimmo.sn
               </li>
               <li className="flex items-start gap-2 font-sans text-sm text-warm-gray/50">
                 <MapPin size={12} className="text-gold/50 mt-0.5" />
@@ -1424,16 +1424,31 @@ function Footer() {
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-sans text-xs text-warm-gray/30">
-            &copy; 2026 LuxeProperty. Tous droits réservés.
+            &copy; 2026 SAMA IMMO. Tous droits réservés.
           </p>
-          <div className="flex gap-8 font-sans text-xs text-warm-gray/30">
-            <span className="hover:text-gold transition-colors cursor-pointer">
-              Mentions légales
-            </span>
-            <span className="hover:text-gold transition-colors cursor-pointer">
-              Confidentialité
-            </span>
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+            <div className="flex gap-8 font-sans text-xs text-warm-gray/30">
+              <span className="hover:text-gold transition-colors cursor-pointer">
+                Mentions légales
+              </span>
+              <span className="hover:text-gold transition-colors cursor-pointer">
+                Confidentialité
+              </span>
+            </div>
           </div>
+        </div>
+
+        {/* Keur'Geek Digital credit */}
+        <div className="mt-8 pt-6 border-t border-noir-mid/50 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <span className="font-sans text-[10px] tracking-[0.15em] uppercase text-warm-gray/25">
+            Site conçu et développé par
+          </span>
+          <span className="font-serif text-sm font-bold text-gold/60 hover:text-gold transition-colors duration-300 cursor-default">
+            Keur&apos;Geek Digital
+          </span>
+          <span className="font-sans text-[9px] tracking-[0.2em] uppercase text-warm-gray/20">
+            — Startup Sénégalaise · IA &amp; Solutions Digitales pour PME
+          </span>
         </div>
       </div>
     </footer>
