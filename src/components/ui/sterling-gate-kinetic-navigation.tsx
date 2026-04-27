@@ -167,18 +167,22 @@ export function Component() {
           <header className="header">
             <div className="container is--full">
               <nav className="nav-row">
-                <a href="#" aria-label="home" className="nav-logo-row w-inline-block"></a>
+                <a href="#" aria-label="home" className="nav-logo-row w-inline-block">
+                  <span className="nav-logo-text">LUXE</span>
+                  <span className="nav-logo-accent">PROPERTY</span>
+                </a>
                 <div className="nav-row__right">
-                  {/* Clean Menu Indicator */}
-                  <div className="nav-toggle-label" onClick={toggleMenu} style={{ cursor: 'pointer', pointerEvents: 'auto' }}>
-                    <span className="toggle-text">click me</span>
-                  </div>
-
-                  {/* Menu Button */}
-                  <button role="button" className="nav-close-btn" onClick={toggleMenu} style={{ pointerEvents: 'auto' }}>
+                  {/* Single unified menu toggle button */}
+                  <button
+                    role="button"
+                    className="nav-close-btn"
+                    onClick={toggleMenu}
+                    style={{ pointerEvents: 'auto' }}
+                    aria-label={isMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+                  >
                     <div className="menu-button-text">
                       <p className="p-large">Menu</p>
-                      <p className="p-large">Close</p>
+                      <p className="p-large">Fermer</p>
                     </div>
                     <div className="icon-wrap">
                       <svg
@@ -230,14 +234,14 @@ export function Component() {
               <div className="backdrop-layer second"></div>
               <div className="backdrop-layer"></div>
 
-              {/* Abstract shapes container */}
+              {/* Abstract shapes container — Afro-Editorial Noir gold theme */}
               <div className="ambient-background-shapes">
                 {/* Shape 1: Floating circles */}
                 <svg className="bg-shape bg-shape-1" viewBox="0 0 400 400" fill="none">
-                  <circle className="shape-element" cx="80" cy="120" r="40" fill="rgba(99,102,241,0.15)" />
-                  <circle className="shape-element" cx="300" cy="80" r="60" fill="rgba(139,92,246,0.12)" />
-                  <circle className="shape-element" cx="200" cy="300" r="80" fill="rgba(236,72,153,0.1)" />
-                  <circle className="shape-element" cx="350" cy="280" r="30" fill="rgba(99,102,241,0.15)" />
+                  <circle className="shape-element" cx="80" cy="120" r="40" fill="rgba(202,138,4,0.15)" />
+                  <circle className="shape-element" cx="300" cy="80" r="60" fill="rgba(161,98,7,0.12)" />
+                  <circle className="shape-element" cx="200" cy="300" r="80" fill="rgba(234,179,8,0.08)" />
+                  <circle className="shape-element" cx="350" cy="280" r="30" fill="rgba(202,138,4,0.15)" />
                 </svg>
 
                 {/* Shape 2: Wave pattern */}
@@ -245,14 +249,14 @@ export function Component() {
                   <path
                     className="shape-element"
                     d="M0 200 Q100 100, 200 200 T 400 200"
-                    stroke="rgba(99,102,241,0.2)"
+                    stroke="rgba(202,138,4,0.15)"
                     strokeWidth="60"
                     fill="none"
                   />
                   <path
                     className="shape-element"
                     d="M0 280 Q100 180, 200 280 T 400 280"
-                    stroke="rgba(139,92,246,0.15)"
+                    stroke="rgba(161,98,7,0.12)"
                     strokeWidth="40"
                     fill="none"
                   />
@@ -260,20 +264,20 @@ export function Component() {
 
                 {/* Shape 3: Grid dots */}
                 <svg className="bg-shape bg-shape-3" viewBox="0 0 400 400" fill="none">
-                  <circle className="shape-element" cx="50" cy="50" r="8" fill="rgba(99,102,241,0.3)" />
-                  <circle className="shape-element" cx="150" cy="50" r="8" fill="rgba(139,92,246,0.3)" />
-                  <circle className="shape-element" cx="250" cy="50" r="8" fill="rgba(236,72,153,0.3)" />
-                  <circle className="shape-element" cx="350" cy="50" r="8" fill="rgba(99,102,241,0.3)" />
-                  <circle className="shape-element" cx="100" cy="150" r="12" fill="rgba(139,92,246,0.25)" />
-                  <circle className="shape-element" cx="200" cy="150" r="12" fill="rgba(236,72,153,0.25)" />
-                  <circle className="shape-element" cx="300" cy="150" r="12" fill="rgba(99,102,241,0.25)" />
-                  <circle className="shape-element" cx="50" cy="250" r="10" fill="rgba(236,72,153,0.3)" />
-                  <circle className="shape-element" cx="150" cy="250" r="10" fill="rgba(99,102,241,0.3)" />
-                  <circle className="shape-element" cx="250" cy="250" r="10" fill="rgba(139,92,246,0.3)" />
-                  <circle className="shape-element" cx="350" cy="250" r="10" fill="rgba(236,72,153,0.3)" />
-                  <circle className="shape-element" cx="100" cy="350" r="6" fill="rgba(99,102,241,0.3)" />
-                  <circle className="shape-element" cx="200" cy="350" r="6" fill="rgba(139,92,246,0.3)" />
-                  <circle className="shape-element" cx="300" cy="350" r="6" fill="rgba(236,72,153,0.3)" />
+                  <circle className="shape-element" cx="50" cy="50" r="8" fill="rgba(202,138,4,0.25)" />
+                  <circle className="shape-element" cx="150" cy="50" r="8" fill="rgba(161,98,7,0.25)" />
+                  <circle className="shape-element" cx="250" cy="50" r="8" fill="rgba(234,179,8,0.2)" />
+                  <circle className="shape-element" cx="350" cy="50" r="8" fill="rgba(202,138,4,0.25)" />
+                  <circle className="shape-element" cx="100" cy="150" r="12" fill="rgba(161,98,7,0.2)" />
+                  <circle className="shape-element" cx="200" cy="150" r="12" fill="rgba(234,179,8,0.15)" />
+                  <circle className="shape-element" cx="300" cy="150" r="12" fill="rgba(202,138,4,0.2)" />
+                  <circle className="shape-element" cx="50" cy="250" r="10" fill="rgba(234,179,8,0.2)" />
+                  <circle className="shape-element" cx="150" cy="250" r="10" fill="rgba(202,138,4,0.2)" />
+                  <circle className="shape-element" cx="250" cy="250" r="10" fill="rgba(161,98,7,0.2)" />
+                  <circle className="shape-element" cx="350" cy="250" r="10" fill="rgba(234,179,8,0.2)" />
+                  <circle className="shape-element" cx="100" cy="350" r="6" fill="rgba(202,138,4,0.25)" />
+                  <circle className="shape-element" cx="200" cy="350" r="6" fill="rgba(161,98,7,0.25)" />
+                  <circle className="shape-element" cx="300" cy="350" r="6" fill="rgba(234,179,8,0.2)" />
                 </svg>
 
                 {/* Shape 4: Organic blobs */}
@@ -281,20 +285,20 @@ export function Component() {
                   <path
                     className="shape-element"
                     d="M100 100 Q150 50, 200 100 Q250 150, 200 200 Q150 250, 100 200 Q50 150, 100 100"
-                    fill="rgba(99,102,241,0.12)"
+                    fill="rgba(202,138,4,0.1)"
                   />
                   <path
                     className="shape-element"
                     d="M250 200 Q300 150, 350 200 Q400 250, 350 300 Q400 250, 350 300 Q300 350, 250 300 Q200 250, 250 200"
-                    fill="rgba(236,72,153,0.1)"
+                    fill="rgba(161,98,7,0.08)"
                   />
                 </svg>
 
                 {/* Shape 5: Diagonal lines */}
                 <svg className="bg-shape bg-shape-5" viewBox="0 0 400 400" fill="none">
-                  <line className="shape-element" x1="0" y1="100" x2="300" y2="400" stroke="rgba(99,102,241,0.15)" strokeWidth="30" />
-                  <line className="shape-element" x1="100" y1="0" x2="400" y2="300" stroke="rgba(139,92,246,0.12)" strokeWidth="25" />
-                  <line className="shape-element" x1="200" y1="0" x2="400" y2="200" stroke="rgba(236,72,153,0.1)" strokeWidth="20" />
+                  <line className="shape-element" x1="0" y1="100" x2="300" y2="400" stroke="rgba(202,138,4,0.12)" strokeWidth="30" />
+                  <line className="shape-element" x1="100" y1="0" x2="400" y2="300" stroke="rgba(161,98,7,0.1)" strokeWidth="25" />
+                  <line className="shape-element" x1="200" y1="0" x2="400" y2="200" stroke="rgba(234,179,8,0.08)" strokeWidth="20" />
                 </svg>
               </div>
             </div>
@@ -302,32 +306,32 @@ export function Component() {
             <div className="menu-content-wrapper">
               <ul className="menu-list">
                 <li className="menu-list-item" data-shape="1">
-                  <a href="#" className="nav-link w-inline-block">
-                    <p className="nav-link-text">About us</p>
+                  <a href="#proprietes" className="nav-link w-inline-block" onClick={closeMenu}>
+                    <p className="nav-link-text">Nos Propriétés</p>
                     <div className="nav-link-hover-bg"></div>
                   </a>
                 </li>
                 <li className="menu-list-item" data-shape="2">
-                  <a href="#" className="nav-link w-inline-block">
-                    <p className="nav-link-text">Our work</p>
+                  <a href="#chiffres" className="nav-link w-inline-block" onClick={closeMenu}>
+                    <p className="nav-link-text">Nos Chiffres</p>
                     <div className="nav-link-hover-bg"></div>
                   </a>
                 </li>
                 <li className="menu-list-item" data-shape="3">
-                  <a href="#" className="nav-link w-inline-block">
-                    <p className="nav-link-text">Services</p>
+                  <a href="#temoignages" className="nav-link w-inline-block" onClick={closeMenu}>
+                    <p className="nav-link-text">Témoignages</p>
                     <div className="nav-link-hover-bg"></div>
                   </a>
                 </li>
                 <li className="menu-list-item" data-shape="4">
-                  <a href="#" className="nav-link w-inline-block">
-                    <p className="nav-link-text" data-menu-fade>Blog</p>
+                  <a href="#contact" className="nav-link w-inline-block" onClick={closeMenu}>
+                    <p className="nav-link-text" data-menu-fade>Contact</p>
                     <div className="nav-link-hover-bg"></div>
                   </a>
                 </li>
                 <li className="menu-list-item" data-shape="5">
-                  <a href="#" className="nav-link w-inline-block">
-                    <p className="nav-link-text">Contact us</p>
+                  <a href="tel:+221338000000" className="nav-link w-inline-block" onClick={closeMenu}>
+                    <p className="nav-link-text">+221 33 800 00 00</p>
                     <div className="nav-link-hover-bg"></div>
                   </a>
                 </li>
