@@ -999,17 +999,33 @@ function KineticStatCard({
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (progress / 100) * circumference
 
+  // Parse hover color for rgba variants
+  const hexToRgb = (hex: string) => {
+    const r = parseInt(hex.slice(1, 3), 16)
+    const g = parseInt(hex.slice(3, 5), 16)
+    const b = parseInt(hex.slice(5, 7), 16)
+    return { r, g, b }
+  }
+  const rgb = hexToRgb(stat.hoverColor)
+
   return (
     <div
       ref={ref}
       className="kinetic-stat relative group cursor-default"
+      style={{ '--stat-hover': stat.hoverColor } as React.CSSProperties}
     >
-      <div className="relative border border-noir-mid/50 p-8 lg:p-10 hover:border-gold/20 transition-colors duration-700 overflow-hidden">
+      <div className="kinetic-stat-inner relative border border-noir-mid/50 p-8 lg:p-10 overflow-hidden transition-colors duration-700"
+        style={{
+          '--stat-hover-r': rgb.r,
+          '--stat-hover-g': rgb.g,
+          '--stat-hover-b': rgb.b,
+        } as React.CSSProperties}
+      >
         {/* Background glow on hover */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gold/0 via-gold/0 to-gold/0 group-hover:from-gold/[0.03] group-hover:via-transparent group-hover:to-gold/[0.02] transition-all duration-700" />
+        <div className="stat-bg-glow absolute inset-0 transition-all duration-700" />
 
         {/* Index number watermark */}
-        <div className="absolute -top-3 -right-2 font-serif text-[8rem] lg:text-[10rem] font-bold text-cream/[0.02] leading-none select-none pointer-events-none group-hover:text-gold/[0.04] transition-colors duration-1000">
+        <div className="absolute -top-3 -right-2 font-serif text-[8rem] lg:text-[10rem] font-bold text-cream/[0.02] leading-none select-none pointer-events-none stat-watermark transition-colors duration-1000">
           {String(index + 1).padStart(2, '0')}
         </div>
 
@@ -1024,6 +1040,7 @@ function KineticStatCard({
               fill="none"
               stroke="rgba(202,138,4,0.08)"
               strokeWidth="2"
+              className="stat-ring-bg"
             />
             {/* Progress ring */}
             <circle
@@ -1047,32 +1064,32 @@ function KineticStatCard({
           <div className="stat-icon-glow absolute inset-0 flex items-center justify-center">
             <stat.icon
               size={28}
-              className="text-gold/50 group-hover:text-gold transition-colors duration-500"
+              className="stat-icon text-gold/50 transition-colors duration-500"
             />
           </div>
         </div>
 
         {/* Number with suffix */}
         <div className="text-center mb-3">
-          <span className="stat-number font-serif text-5xl lg:text-6xl font-bold text-cream group-hover:text-gold transition-colors duration-700 inline-block">
+          <span className="stat-number font-serif text-5xl lg:text-6xl font-bold text-cream transition-colors duration-700 inline-block">
             {count}
           </span>
-          <span className="stat-suffix font-serif text-3xl lg:text-4xl font-bold text-gold/50 group-hover:text-gold/80 transition-colors duration-700">
+          <span className="stat-suffix font-serif text-3xl lg:text-4xl font-bold text-gold/50 transition-colors duration-700">
             {stat.suffix}
           </span>
         </div>
 
         {/* Label */}
-        <div className="stat-label-text font-sans text-[10px] tracking-[0.3em] uppercase text-warm-gray/40 group-hover:text-warm-gray/70 text-center transition-colors duration-500">
+        <div className="stat-label-text font-sans text-[10px] tracking-[0.3em] uppercase text-warm-gray/40 text-center transition-colors duration-500">
           {stat.label}
         </div>
 
         {/* Decorative bottom line */}
-        <div className="stat-deco-line w-8 h-px bg-gold/30 group-hover:bg-gold group-hover:w-full mx-auto mt-4 transition-all duration-700" />
+        <div className="stat-deco-line w-8 h-px bg-gold/30 mx-auto mt-4 transition-all duration-700" />
 
         {/* Corner accents */}
-        <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-gold/0 group-hover:border-gold/30 transition-colors duration-700" />
-        <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-gold/0 group-hover:border-gold/30 transition-colors duration-700" />
+        <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-transparent transition-colors duration-700 stat-corner-tl" />
+        <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-transparent transition-colors duration-700 stat-corner-br" />
       </div>
     </div>
   )

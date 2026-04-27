@@ -232,6 +232,73 @@ body {
   will-change: transform, opacity;
 }
 
+/* ─── Kinetic Stat Card — Unique Hover Colors ──────────── */
+
+/* Border changes to card's unique color */
+.kinetic-stat:hover .kinetic-stat-inner {
+  border-color: var(--stat-hover);
+}
+
+/* Background glow fills with unique color */
+.kinetic-stat:hover .stat-bg-glow {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--stat-hover-r), var(--stat-hover-g), var(--stat-hover-b), 0.06) 0%,
+    transparent 50%,
+    rgba(var(--stat-hover-r), var(--stat-hover-g), var(--stat-hover-b), 0.03) 100%
+  );
+}
+
+/* Watermark number */
+.kinetic-stat:hover .stat-watermark {
+  color: rgba(var(--stat-hover-r), var(--stat-hover-g), var(--stat-hover-b), 0.06);
+}
+
+/* Progress ring stroke */
+.kinetic-stat:hover .progress-ring-circle {
+  stroke: var(--stat-hover) !important;
+  filter: drop-shadow(0 0 8px rgba(var(--stat-hover-r), var(--stat-hover-g), var(--stat-hover-b), 0.4)) !important;
+}
+
+/* Ring background */
+.kinetic-stat:hover .stat-ring-bg {
+  stroke: rgba(var(--stat-hover-r), var(--stat-hover-g), var(--stat-hover-b), 0.12);
+}
+
+/* Icon */
+.kinetic-stat:hover .stat-icon {
+  color: var(--stat-hover) !important;
+}
+
+/* Number */
+.kinetic-stat:hover .stat-number {
+  color: var(--stat-hover) !important;
+}
+
+/* Suffix */
+.kinetic-stat:hover .stat-suffix {
+  color: rgba(var(--stat-hover-r), var(--stat-hover-g), var(--stat-hover-b), 0.8) !important;
+}
+
+/* Label */
+.kinetic-stat:hover .stat-label-text {
+  color: rgba(var(--stat-hover-r), var(--stat-hover-g), var(--stat-hover-b), 0.7) !important;
+}
+
+/* Decorative bottom line */
+.kinetic-stat:hover .stat-deco-line {
+  background-color: var(--stat-hover) !important;
+  width: 100%;
+}
+
+/* Corner accents */
+.kinetic-stat:hover .stat-corner-tl {
+  border-color: rgba(var(--stat-hover-r), var(--stat-hover-g), var(--stat-hover-b), 0.4);
+}
+.kinetic-stat:hover .stat-corner-br {
+  border-color: rgba(var(--stat-hover-r), var(--stat-hover-g), var(--stat-hover-b), 0.4);
+}
+
 /* ═══════════════════════════════════════════════════════════════
    Sterling Gate Kinetic Navigation — Full Component Styles
    ═══════════════════════════════════════════════════════════════ */
