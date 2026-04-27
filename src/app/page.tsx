@@ -5,9 +5,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import {
-  Bed,
-  Bath,
-  Maximize2,
   MapPin,
   Phone,
   Mail,
@@ -20,6 +17,7 @@ import {
 } from 'lucide-react'
 import { Component as SterlingGateNav } from '@/components/ui/sterling-gate-kinetic-navigation'
 import { TestimonialsColumn } from '@/components/ui/testimonials-columns-1'
+import { ArgentLoopInfiniteSlider } from '@/components/ui/argent-loop-infinite-slider'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -539,63 +537,15 @@ function MarqueeBand() {
   )
 }
 
-// ─── HORIZONTAL SCROLL PROPERTIES ──────────────────────────
+// ─── PROPERTY SECTION — ARGENT LOOP INFINITE SLIDER ───────
 function PropertySection() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
-
-  useGSAP(
-    () => {
-      const track = trackRef.current
-      const section = sectionRef.current
-      if (!track || !section) return
-
-      // Pin the section and scroll the track horizontally
-      const scrollWidth = track.scrollWidth - window.innerWidth
-
-      gsap.to(track, {
-        x: -scrollWidth,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: () => `+=${scrollWidth}`,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      })
-
-      // Animate each property card as it enters
-      gsap.utils.toArray<HTMLElement>('.horiz-card').forEach((card) => {
-        gsap.from(card, {
-          y: 80,
-          opacity: 0,
-          scale: 0.9,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'left 80%',
-            end: 'left 50%',
-            scrub: 1,
-            containerAnimation: gsap.getById('horizScroll') ?? undefined,
-          },
-        })
-      })
-    },
-    { scope: sectionRef }
-  )
-
   return (
     <section
-      ref={sectionRef}
       id="proprietes"
-      className="bg-noir relative overflow-hidden"
+      className="relative"
     >
-      {/* Section title pinned at top */}
-      <div className="absolute top-8 left-6 lg:left-12 z-10">
+      {/* Section header overlay */}
+      <div className="property-section-header">
         <div className="font-sans text-[10px] tracking-[0.5em] uppercase text-gold mb-2">
           Collection
         </div>
@@ -605,98 +555,15 @@ function PropertySection() {
         <div className="w-12 h-px bg-gold mt-3" />
       </div>
 
-      {/* Horizontal track */}
-      <div
-        ref={trackRef}
-        className="flex items-center h-screen gap-8 lg:gap-16 pl-[50vw] pr-[20vw] pt-20"
-      >
-        {properties.map((property, index) => (
-          <HorizPropertyCard
-            key={property.id}
-            property={property}
-            index={index}
-          />
-        ))}
+      {/* Scroll hint */}
+      <div className="property-scroll-hint">
+        <div className="property-scroll-hint-line" />
+        <span className="property-scroll-hint-text">Scroll</span>
       </div>
+
+      {/* Infinite slider */}
+      <ArgentLoopInfiniteSlider />
     </section>
-  )
-}
-
-function HorizPropertyCard({
-  property,
-  index,
-}: {
-  property: (typeof properties)[0]
-  index: number
-}) {
-  return (
-    <div className="horiz-card flex-shrink-0 w-[75vw] sm:w-[50vw] lg:w-[35vw] group">
-      {/* Image with clip-path reveal on hover */}
-      <div className="relative overflow-hidden aspect-[4/5] mb-6">
-        <img
-          src={property.image}
-          alt={property.name}
-          className="w-full h-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-noir/60 via-transparent to-transparent" />
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-gold/0 group-hover:bg-gold/10 transition-colors duration-700" />
-
-        {/* Property number */}
-        <div className="absolute top-4 left-4 font-serif text-6xl font-bold text-cream/10">
-          {String(index + 1).padStart(2, '0')}
-        </div>
-
-        {/* Price tag */}
-        <div className="absolute bottom-4 left-4">
-          <span className="font-serif text-2xl lg:text-3xl font-bold text-cream">
-            {property.price}
-          </span>
-          <span className="font-sans text-xs text-gold tracking-wider uppercase ml-2">
-            {property.currency}
-          </span>
-        </div>
-      </div>
-
-      {/* Info */}
-      <div className="space-y-3">
-        <div className="flex items-center gap-2">
-          <MapPin size={12} className="text-gold" />
-          <span className="font-sans text-[10px] tracking-[0.3em] uppercase text-gold">
-            {property.location}
-          </span>
-        </div>
-        <h3 className="font-serif text-3xl lg:text-4xl font-bold text-cream group-hover:text-gold transition-colors duration-500">
-          {property.name}
-        </h3>
-        <div className="flex gap-4">
-          {[
-            { icon: Bed, value: property.bedrooms, label: 'Ch.' },
-            { icon: Bath, value: property.bathrooms, label: 'SdB' },
-            { icon: Maximize2, value: `${property.area}m²`, label: 'Surface' },
-          ].map((d) => (
-            <div
-              key={d.label}
-              className="flex items-center gap-1.5 font-sans text-xs text-warm-gray/60"
-            >
-              <d.icon size={12} className="text-gold/50" />
-              <span className="text-cream font-medium">{d.value}</span>
-              <span>{d.label}</span>
-            </div>
-          ))}
-        </div>
-        <p className="font-sans text-xs text-warm-gray/50 leading-relaxed max-w-md">
-          {property.description}
-        </p>
-        <button className="magnetic group/btn inline-flex items-center gap-2 font-sans text-[10px] tracking-[0.3em] uppercase text-gold mt-2 hover:text-gold-light transition-colors">
-          Demander une visite
-          <ArrowRight
-            size={12}
-            className="group-hover/btn:translate-x-2 transition-transform duration-300"
-          />
-        </button>
-      </div>
-    </div>
   )
 }
 
