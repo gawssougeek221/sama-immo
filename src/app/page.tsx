@@ -67,10 +67,10 @@ const properties = [
 ]
 
 const stats = [
-  { value: 1200, suffix: '+', label: 'Propriétés Vendues', icon: Diamond },
-  { value: 25, suffix: '', label: "Ans d'Excellence", icon: Clock },
-  { value: 98, suffix: '%', label: 'Clients Satisfaits', icon: Shield },
-  { value: 500, suffix: 'M+', label: "CA Annuel (CFA)", icon: TrendingUp },
+  { value: 1200, suffix: '+', label: 'Propriétés Vendues', icon: Diamond, hoverColor: '#10B981' },   // Emerald
+  { value: 25, suffix: '', label: "Ans d'Excellence", icon: Clock, hoverColor: '#F59E0B' },        // Amber
+  { value: 98, suffix: '%', label: 'Clients Satisfaits', icon: Shield, hoverColor: '#3B82F6' },    // Sapphire
+  { value: 500, suffix: 'M+', label: "CA Annuel (CFA)", icon: TrendingUp, hoverColor: '#EF4444' }, // Ruby
 ]
 
 const testimonials = [
