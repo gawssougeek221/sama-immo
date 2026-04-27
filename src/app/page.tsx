@@ -27,16 +27,16 @@ gsap.registerPlugin(ScrollTrigger, useGSAP)
 const properties = [
   {
     id: 1,
-    name: 'Villa Luxe Ngor',
+    name: 'Villa Luxe Almadies',
     price: '850 000 000',
     currency: 'CFA',
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 450,
+    bedrooms: 5,
+    bathrooms: 4,
+    area: 520,
     description:
-      "Magnifique villa vue océan à Ngor, avec terrasse panoramique, piscine chauffée et jardin paysager. Construction premium avec finitions haut de gamme, sécurité 24/7 et accès privé à la plage.",
-    image: '/villa-ngor.png',
-    location: 'Ngor, Dakar',
+      "Magnifique villa vue océan aux Almadies, avec terrasse panoramique, piscine chauffée et jardin paysager. Construction premium avec finitions haut de gamme, sécurité 24/7 et accès privé à la plage.",
+    image: '/villa-ngor.jpg',
+    location: 'Almadies, Dakar',
   },
   {
     id: 2,
@@ -48,7 +48,7 @@ const properties = [
     area: 350,
     description:
       "Élégant penthouse au cœur du Plateau avec vue imprenable sur l'Atlantique. Terrasse rooftop privée, finitions marbre et bois précieux.",
-    image: '/penthouse-plateau.png',
+    image: '/penthouse-plateau.jpg',
     location: 'Plateau, Dakar',
   },
   {
@@ -60,9 +60,35 @@ const properties = [
     bathrooms: 2,
     area: 300,
     description:
-      'Maison de charme à Mermoz dans un quartier résidentiel prisé. Cuisine américaine équipée, espaces verts paysagers, parking couvert.',
-    image: '/residence-mermoz.png',
+      'Appartement meublé de standing à Mermoz dans un quartier résidentiel prisé. Cuisine américaine équipée, espaces verts paysagers, parking couvert.',
+    image: '/residence-mermoz.jpg',
     location: 'Mermoz, Dakar',
+  },
+  {
+    id: 4,
+    name: 'Villa Prestige Almadies',
+    price: '980 000 000',
+    currency: 'CFA',
+    bedrooms: 6,
+    bathrooms: 5,
+    area: 680,
+    description:
+      "Villa prestigieuse aux Almadies avec vue mer, piscine à débordement, jardin tropical et dépendance. Finitions luxueuses, domotique intégrée.",
+    image: '/villa-almadies.jpg',
+    location: 'Almadies, Dakar',
+  },
+  {
+    id: 5,
+    name: 'Appartement Plateau',
+    price: '380 000 000',
+    currency: 'CFA',
+    bedrooms: 2,
+    bathrooms: 1,
+    area: 180,
+    description:
+      "Appartement moderne au Plateau, lumineux et climatisé. Proche des commerces et du centre d'affaires, idéal pour investissement locatif.",
+    image: '/appartement-plateau.jpg',
+    location: 'Plateau, Dakar',
   },
 ]
 
@@ -389,7 +415,7 @@ function HeroSection() {
       <div className="absolute inset-0 overflow-hidden">
         <div
           className="hero-bg-img absolute inset-0 bg-cover bg-center scale-110"
-          style={{ backgroundImage: "url('/hero-background.png')" }}
+          style={{ backgroundImage: "url('/hero-background.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-noir/60 via-noir/40 to-noir" />
         <div className="absolute inset-0 bg-gradient-to-r from-noir/70 via-transparent to-noir/30" />
