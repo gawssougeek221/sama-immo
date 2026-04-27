@@ -140,3 +140,53 @@ html {
   background: linear-gradient(90deg, transparent, #CA8A04, transparent);
   border: none;
 }
+
+/* Hide default cursor on desktop for magnetic cursor */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
+/* Smooth page load */
+body {
+  overflow-x: hidden;
+}
+
+/* Preloader transitions */
+.preloader-top,
+.preloader-bottom {
+  will-change: transform;
+}
+
+/* Hero character will-change */
+.hero-char {
+  will-change: transform, opacity;
+  display: inline-block;
+}
+
+/* Horizontal scroll section */
+.horiz-card {
+  will-change: transform, opacity;
+}
+
+/* Marquee */
+.marquee-track {
+  will-change: transform;
+}
+
+/* Magnetic elements */
+.magnetic {
+  will-change: transform;
+}
+
+/* Image zoom on hover */
+.horiz-card img {
+  transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Testimonial card hover */
+.testi-card {
+  will-change: transform;
+  transition: border-color 0.7s ease;
+}
