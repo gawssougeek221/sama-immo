@@ -434,9 +434,9 @@ body {
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(12, 10, 9, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(12, 10, 9, 0.75);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
   opacity: 0;
   z-index: 1;
 }
