@@ -14,13 +14,12 @@ import {
   ArrowRight,
   Star,
   ChevronDown,
-  Menu,
-  X,
   Diamond,
   Shield,
   TrendingUp,
   Clock,
 } from 'lucide-react'
+import { Component as SterlingGateNav } from '@/components/ui/sterling-gate-kinetic-navigation'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -264,100 +263,9 @@ function Preloader() {
   )
 }
 
-// ─── NAVBAR ────────────────────────────────────────────────
+// ─── NAVBAR (Sterling Gate Kinetic Navigation) ──────────────
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const navRef = useRef<HTMLElement>(null)
-
-  useGSAP(
-    () => {
-      gsap.from('.nav-inner', {
-        y: -100,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-        delay: 3.2,
-      })
-    },
-    { scope: navRef }
-  )
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 80)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  return (
-    <nav
-      ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-        scrolled
-          ? 'bg-noir/90 backdrop-blur-xl border-b border-gold/10'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="nav-inner max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="flex items-center justify-between h-20">
-          <div className="flex items-center gap-3">
-            <Diamond className="text-gold" size={24} />
-            <span className="font-serif text-2xl font-bold tracking-wide">
-              <span className="text-cream">Luxe</span>
-              <span className="text-gold">Property</span>
-            </span>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-10">
-            {['Propriétés', 'Chiffres', 'Témoignages', 'Contact'].map(
-              (item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="magnetic text-sm font-sans font-medium tracking-widest uppercase text-warm-gray hover:text-gold transition-colors duration-300 relative group"
-                >
-                  {item}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-500" />
-                </a>
-              )
-            )}
-            <a
-              href="#contact"
-              className="magnetic px-6 py-2.5 bg-gold text-noir font-sans font-semibold text-sm tracking-wider uppercase hover:bg-gold-light transition-all duration-300"
-            >
-              Contact
-            </a>
-          </div>
-
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden text-cream p-2"
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </div>
-
-      {mobileOpen && (
-        <div className="lg:hidden bg-noir/98 backdrop-blur-xl border-t border-gold/10">
-          <div className="px-6 py-6 space-y-4">
-            {['Propriétés', 'Chiffres', 'Témoignages', 'Contact'].map(
-              (item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
-                  onClick={() => setMobileOpen(false)}
-                  className="block py-2 font-sans text-lg text-warm-gray hover:text-gold transition-colors tracking-wider uppercase"
-                >
-                  {item}
-                </a>
-              )
-            )}
-          </div>
-        </div>
-      )}
-    </nav>
-  )
+  return <SterlingGateNav />
 }
 
 // ─── HERO ──────────────────────────────────────────────────
