@@ -430,11 +430,13 @@ body {
   display: none;
 }
 
-/* Overlay backdrop */
+/* Overlay backdrop — blurred background when menu is open */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(12, 10, 9, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   opacity: 0;
   z-index: 1;
 }
