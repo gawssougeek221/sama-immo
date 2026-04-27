@@ -1232,30 +1232,102 @@ function TestimonialsSection() {
   )
 }
 
-// ─── CONTACT SECTION ───────────────────────────────────────
+// ─── CONTACT — IMMERSIVE SPLIT SECTION ────────────────────
 function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null)
 
   useGSAP(
     () => {
-      gsap.from('.contact-left', {
-        x: -80,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
+      const section = sectionRef.current
+      if (!section) return
+
+      // Giant background text parallax
+      gsap.to('.contact-giant-text', {
+        xPercent: -15,
+        ease: 'none',
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 60%',
+          trigger: section,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
         },
       })
-      gsap.from('.contact-right', {
-        x: 80,
+
+      // Header reveal
+      gsap.from('.contact-label', {
+        y: 40,
         opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: section, start: 'top 65%' },
+      })
+      gsap.from('.contact-title-line', {
+        y: 100,
+        rotationX: -40,
+        opacity: 0,
+        stagger: 0.12,
         duration: 1,
         ease: 'power3.out',
+        scrollTrigger: { trigger: section, start: 'top 60%' },
+      })
+      gsap.from('.contact-desc', {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: section, start: 'top 55%' },
+      })
+
+      // Gold line sweep
+      gsap.from('.contact-gold-line', {
+        scaleX: 0,
+        duration: 1.5,
+        ease: 'power4.inOut',
+        scrollTrigger: { trigger: section, start: 'top 55%' },
+      })
+
+      // Contact cards stagger reveal
+      gsap.from('.contact-card', {
+        y: 60,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: section, start: 'top 50%' },
+      })
+
+      // Form fields stagger
+      gsap.from('.form-field', {
+        y: 40,
+        opacity: 0,
+        stagger: 0.08,
+        duration: 0.7,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: section, start: 'top 45%' },
+      })
+
+      // Floating decorative elements
+      gsap.to('.contact-float-1', {
+        y: -80,
+        rotation: 45,
+        ease: 'none',
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 60%',
+          trigger: section,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      })
+      gsap.to('.contact-float-2', {
+        y: -60,
+        x: 30,
+        rotation: -20,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
         },
       })
     },
@@ -1263,117 +1335,202 @@ function ContactSection() {
   )
 
   return (
-    <section ref={sectionRef} id="contact" className="bg-noir-light py-28 lg:py-44">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <SectionHeader
-          label="Contact"
-          title="Prenons Contact"
-          description="Notre équipe d'experts vous accompagne dans votre projet immobilier de luxe."
-        />
+    <section
+      ref={sectionRef}
+      id="contact"
+      className="bg-noir-light relative overflow-hidden py-28 lg:py-44"
+    >
+      {/* Giant background watermark text */}
+      <div className="contact-giant-text absolute top-[10%] -left-10 font-serif text-[20rem] lg:text-[35rem] font-bold text-cream/[0.02] leading-none select-none pointer-events-none whitespace-nowrap will-change-transform">
+        Contact
+      </div>
 
+      {/* Floating decorative elements */}
+      <div className="contact-float-1 absolute top-[20%] right-[5%] w-40 h-40 border border-gold/8 rotate-45 will-change-transform hidden lg:block" />
+      <div className="contact-float-2 absolute bottom-[15%] left-[8%] w-24 h-24 border border-cream/[0.03] rounded-full will-change-transform hidden lg:block" />
+
+      {/* Vertical decorative lines */}
+      <div className="absolute top-0 left-[30%] w-px h-full bg-gradient-to-b from-transparent via-gold/8 to-transparent hidden lg:block" />
+      <div className="absolute top-0 right-[25%] w-px h-full bg-gradient-to-b from-transparent via-noir-mid/20 to-transparent hidden lg:block" />
+
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+        {/* Header */}
+        <div className="mb-16 lg:mb-24">
+          <span className="contact-label block font-sans text-[10px] tracking-[0.5em] uppercase text-gold mb-6">
+            Contact
+          </span>
+          <h2 className="contact-title-line font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-cream leading-[0.9]">
+            Prenons
+          </h2>
+          <h2 className="contact-title-line font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-gold italic leading-[0.9]">
+            Contact
+          </h2>
+          <p className="contact-desc font-sans text-sm lg:text-base text-warm-gray/40 max-w-lg mt-6 leading-relaxed">
+            Notre équipe d&apos;experts vous accompagne dans votre projet immobilier de luxe. Chaque demande mérite une attention personnelle.
+          </p>
+          <div className="contact-gold-line w-24 h-px bg-gold mt-8 origin-left" />
+        </div>
+
+        {/* Split layout: info cards left, form right */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          <div className="contact-left lg:col-span-4 space-y-10">
+          {/* Left — Contact cards */}
+          <div className="lg:col-span-5 space-y-5">
             {[
               {
                 icon: Phone,
                 title: 'Téléphone',
                 value: '+221 33 800 00 00',
                 sub: 'Lun — Sam, 8h à 19h',
+                accent: '#10B981',
               },
               {
                 icon: Mail,
                 title: 'Email',
                 value: 'contact@luxeproperty.sn',
                 sub: 'Réponse sous 24h',
+                accent: '#3B82F6',
               },
               {
                 icon: MapPin,
                 title: 'Adresse',
                 value: '45 Boulevard de la République',
                 sub: 'Plateau, Dakar, Sénégal',
+                accent: '#F59E0B',
               },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="flex items-start gap-5 group cursor-default"
-              >
-                <div className="w-12 h-12 border border-noir-mid flex items-center justify-center flex-shrink-0 group-hover:border-gold/40 transition-colors duration-500">
-                  <item.icon
-                    size={18}
-                    className="text-gold/60 group-hover:text-gold transition-colors"
-                  />
+            ].map((item, idx) => {
+              const hexToRgb = (hex: string) => ({
+                r: parseInt(hex.slice(1, 3), 16),
+                g: parseInt(hex.slice(3, 5), 16),
+                b: parseInt(hex.slice(5, 7), 16),
+              })
+              const rgb = hexToRgb(item.accent)
+              return (
+                <div
+                  key={item.title}
+                  className="contact-card group cursor-default relative overflow-hidden border border-noir-mid/50 p-6 lg:p-8 hover:border-opacity-80 transition-all duration-700"
+                  style={{
+                    '--card-accent': item.accent,
+                    '--card-accent-r': rgb.r,
+                    '--card-accent-g': rgb.g,
+                    '--card-accent-b': rgb.b,
+                  } as React.CSSProperties}
+                >
+                  {/* Hover glow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-transparent group-hover:from-[rgba(var(--card-accent-r),var(--card-accent-g),var(--card-accent-b),0.04)] group-hover:via-transparent group-hover:to-[rgba(var(--card-accent-r),var(--card-accent-g),var(--card-accent-b),0.02)] transition-all duration-700" />
+
+                  <div className="relative z-10 flex items-start gap-5">
+                    {/* Icon container */}
+                    <div className="w-12 h-12 border border-noir-mid flex items-center justify-center flex-shrink-0 group-hover:border-[var(--card-accent)] transition-colors duration-500">
+                      <item.icon
+                        size={18}
+                        className="text-gold/60 group-hover:text-[var(--card-accent)] transition-colors duration-500"
+                      />
+                    </div>
+
+                    <div>
+                      <div className="font-sans text-[10px] tracking-[0.3em] uppercase text-gold/60 mb-1 group-hover:text-[var(--card-accent)] transition-colors duration-500">
+                        {item.title}
+                      </div>
+                      <div className="font-serif text-lg text-cream group-hover:text-cream transition-colors duration-300">
+                        {item.value}
+                      </div>
+                      <div className="font-sans text-xs text-warm-gray/50 mt-1">
+                        {item.sub}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Accent line on hover */}
+                  <div className="absolute bottom-0 left-0 h-px w-0 group-hover:w-full bg-[var(--card-accent)] transition-all duration-700" />
                 </div>
-                <div>
-                  <div className="font-sans text-[10px] tracking-[0.3em] uppercase text-gold/60 mb-1">
-                    {item.title}
-                  </div>
-                  <div className="font-serif text-lg text-cream">
-                    {item.value}
-                  </div>
-                  <div className="font-sans text-xs text-warm-gray/50 mt-1">
-                    {item.sub}
-                  </div>
-                </div>
+              )
+            })}
+
+            {/* Decorative quote */}
+            <div className="contact-card pt-6 pl-2">
+              <div className="font-serif text-3xl lg:text-4xl text-gold/10 leading-tight italic select-none">
+                &ldquo;L&apos;excellence<br />est un détail.&rdquo;
               </div>
-            ))}
+              <div className="font-sans text-[10px] tracking-[0.3em] uppercase text-warm-gray/20 mt-3">
+                — LuxeProperty
+              </div>
+            </div>
           </div>
 
-          <div className="contact-right lg:col-span-8">
+          {/* Right — Form */}
+          <div className="lg:col-span-7">
             <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                <div>
+                <div className="form-field">
                   <label className="block font-sans text-[10px] tracking-[0.3em] uppercase text-gold/60 mb-2">
                     Nom complet
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Votre nom"
-                    className="w-full bg-transparent border-b border-noir-mid px-1 py-3 font-sans text-sm text-cream placeholder:text-warm-gray/30 focus:border-gold outline-none transition-colors duration-300"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Votre nom"
+                      className="w-full bg-transparent border-b border-noir-mid px-1 py-3 font-sans text-sm text-cream placeholder:text-warm-gray/30 focus:border-gold outline-none transition-colors duration-500 peer"
+                    />
+                    <div className="absolute bottom-0 left-0 h-px w-0 bg-gold peer-focus:w-full transition-all duration-500" />
+                  </div>
                 </div>
-                <div>
+                <div className="form-field">
                   <label className="block font-sans text-[10px] tracking-[0.3em] uppercase text-gold/60 mb-2">
                     Téléphone
                   </label>
-                  <input
-                    type="tel"
-                    placeholder="+221 XX XXX XX XX"
-                    className="w-full bg-transparent border-b border-noir-mid px-1 py-3 font-sans text-sm text-cream placeholder:text-warm-gray/30 focus:border-gold outline-none transition-colors duration-300"
-                  />
+                  <div className="relative">
+                    <input
+                      type="tel"
+                      placeholder="+221 XX XXX XX XX"
+                      className="w-full bg-transparent border-b border-noir-mid px-1 py-3 font-sans text-sm text-cream placeholder:text-warm-gray/30 focus:border-gold outline-none transition-colors duration-500 peer"
+                    />
+                    <div className="absolute bottom-0 left-0 h-px w-0 bg-gold peer-focus:w-full transition-all duration-500" />
+                  </div>
                 </div>
               </div>
-              <div>
+              <div className="form-field">
                 <label className="block font-sans text-[10px] tracking-[0.3em] uppercase text-gold/60 mb-2">
                   Email
                 </label>
-                <input
-                  type="email"
-                  placeholder="votre@email.com"
-                  className="w-full bg-transparent border-b border-noir-mid px-1 py-3 font-sans text-sm text-cream placeholder:text-warm-gray/30 focus:border-gold outline-none transition-colors duration-300"
-                />
+                <div className="relative">
+                  <input
+                    type="email"
+                    placeholder="votre@email.com"
+                    className="w-full bg-transparent border-b border-noir-mid px-1 py-3 font-sans text-sm text-cream placeholder:text-warm-gray/30 focus:border-gold outline-none transition-colors duration-500 peer"
+                  />
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-gold peer-focus:w-full transition-all duration-500" />
+                </div>
               </div>
-              <div>
+              <div className="form-field">
                 <label className="block font-sans text-[10px] tracking-[0.3em] uppercase text-gold/60 mb-2">
                   Type de propriété
                 </label>
-                <select className="w-full bg-transparent border-b border-noir-mid px-1 py-3 font-sans text-sm text-cream focus:border-gold outline-none transition-colors duration-300">
-                  <option value="" className="bg-noir-light">Sélectionner</option>
-                  <option value="villa" className="bg-noir-light">Villa</option>
-                  <option value="penthouse" className="bg-noir-light">Penthouse</option>
-                  <option value="appartement" className="bg-noir-light">Appartement</option>
-                </select>
+                <div className="relative">
+                  <select className="w-full bg-transparent border-b border-noir-mid px-1 py-3 font-sans text-sm text-cream focus:border-gold outline-none transition-colors duration-500 appearance-none cursor-pointer">
+                    <option value="" className="bg-noir-light">Sélectionner</option>
+                    <option value="villa" className="bg-noir-light">Villa</option>
+                    <option value="penthouse" className="bg-noir-light">Penthouse</option>
+                    <option value="appartement" className="bg-noir-light">Appartement</option>
+                    <option value="terrain" className="bg-noir-light">Terrain</option>
+                  </select>
+                  <ChevronDown size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-gold/40 pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-gold peer-focus:w-full transition-all duration-500" />
+                </div>
               </div>
-              <div>
+              <div className="form-field">
                 <label className="block font-sans text-[10px] tracking-[0.3em] uppercase text-gold/60 mb-2">
                   Message
                 </label>
-                <textarea
-                  rows={4}
-                  placeholder="Décrivez votre projet immobilier..."
-                  className="w-full bg-transparent border-b border-noir-mid px-1 py-3 font-sans text-sm text-cream placeholder:text-warm-gray/30 focus:border-gold outline-none transition-colors duration-300 resize-none"
-                />
+                <div className="relative">
+                  <textarea
+                    rows={4}
+                    placeholder="Décrivez votre projet immobilier..."
+                    className="w-full bg-transparent border-b border-noir-mid px-1 py-3 font-sans text-sm text-cream placeholder:text-warm-gray/30 focus:border-gold outline-none transition-colors duration-500 resize-none peer"
+                  />
+                  <div className="absolute bottom-0 left-0 h-px w-0 bg-gold peer-focus:w-full transition-all duration-500" />
+                </div>
               </div>
-              <div className="pt-4">
+              <div className="form-field pt-4 flex items-center justify-between">
                 <button className="magnetic group inline-flex items-center gap-4 px-12 py-4 bg-gold text-noir font-sans font-semibold text-xs tracking-[0.3em] uppercase hover:bg-gold-light transition-all duration-300">
                   Envoyer
                   <ArrowRight
@@ -1381,6 +1538,9 @@ function ContactSection() {
                     className="group-hover:translate-x-1 transition-transform"
                   />
                 </button>
+                <span className="font-sans text-[9px] tracking-[0.3em] uppercase text-warm-gray/20 hidden sm:block">
+                  Nous répondons sous 24h
+                </span>
               </div>
             </form>
           </div>
@@ -1503,77 +1663,6 @@ function Footer() {
         </div>
       </div>
     </footer>
-  )
-}
-
-// ─── SECTION HEADER ────────────────────────────────────────
-function SectionHeader({
-  label,
-  title,
-  description,
-}: {
-  label: string
-  title: string
-  description: string
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-
-  useGSAP(
-    () => {
-      gsap.from('.sh-label', {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: ref.current,
-          start: 'top 80%',
-        },
-      })
-      gsap.from('.sh-title', {
-        y: 60,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: ref.current,
-          start: 'top 80%',
-        },
-      })
-      gsap.from('.sh-line', {
-        scaleX: 0,
-        duration: 1,
-        ease: 'power4.inOut',
-        scrollTrigger: {
-          trigger: ref.current,
-          start: 'top 75%',
-        },
-      })
-      gsap.from('.sh-desc', {
-        y: 20,
-        opacity: 0,
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: ref.current,
-          start: 'top 75%',
-        },
-      })
-    },
-    { scope: ref }
-  )
-
-  return (
-    <div ref={ref} className="text-center mb-16 lg:mb-24">
-      <div className="sh-label font-sans text-[10px] tracking-[0.5em] uppercase text-gold mb-4">
-        {label}
-      </div>
-      <h2 className="sh-title font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-cream mb-6">
-        {title}
-      </h2>
-      <div className="sh-line w-16 h-px bg-gold mx-auto mb-6" />
-      <p className="sh-desc font-sans text-sm text-warm-gray/60 max-w-lg mx-auto leading-relaxed">
-        {description}
-      </p>
-    </div>
   )
 }
 
