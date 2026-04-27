@@ -695,98 +695,385 @@ function HorizPropertyCard({
   )
 }
 
-// ─── STATS WITH PINNED COUNTER ─────────────────────────────
+// ─── STATS — KINETIC DATA CATHEDRAL ────────────────────────
 function StatsSection() {
   const sectionRef = useRef<HTMLElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
 
   useGSAP(
     () => {
-      // Staggered reveal of each stat
-      gsap.from('.stat-item', {
-        y: 60,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: 'power3.out',
+      const section = sectionRef.current
+      const track = trackRef.current
+      if (!section || !track) return
+
+      // Pin the entire section — scroll drives the animation
+      const totalScroll = window.innerHeight * 4
+
+      // Master timeline driven by scroll
+      const masterTl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 60%',
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${totalScroll}`,
+          scrub: 1,
+          pin: true,
+          anticipatePin: 1,
         },
       })
 
-      // Horizontal gold line expand
-      gsap.from('.stats-gold-line', {
+      // ─── Scene 1: Section header reveal ───
+      masterTl.from('.stats-label', {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        ease: 'power3.out',
+      })
+      masterTl.from('.stats-title-line', {
+        y: 100,
+        rotationX: -40,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 1,
+        ease: 'power3.out',
+      }, '-=0.6')
+      masterTl.from('.stats-desc', {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+      }, '-=0.5')
+
+      // Gold horizontal line sweep
+      masterTl.from('.stats-horiz-line', {
         scaleX: 0,
         duration: 1.5,
         ease: 'power4.inOut',
+      }, '-=0.6')
+
+      // ─── Scene 2: Each stat reveals one by one ───
+      const statItems = track.querySelectorAll('.kinetic-stat')
+      statItems.forEach((stat, i) => {
+        const ring = stat.querySelector('.progress-ring-circle')
+        const number = stat.querySelector('.stat-number')
+        const suffix = stat.querySelector('.stat-suffix')
+        const label = stat.querySelector('.stat-label-text')
+        const icon = stat.querySelector('.stat-icon-glow')
+        const deco = stat.querySelector('.stat-deco-line')
+
+        // Clip-path reveal from center
+        masterTl.fromTo(stat, {
+          clipPath: 'inset(50% 50% 50% 50%)',
+          opacity: 0,
+          scale: 0.8,
+        }, {
+          clipPath: 'inset(0% 0% 0% 0%)',
+          opacity: 1,
+          scale: 1,
+          duration: 1.5,
+          ease: 'power4.inOut',
+        }, i === 0 ? '+=0.3' : '-=0.9')
+
+        // Ring progress fill
+        if (ring) {
+          const circumference = (ring as SVGCircleElement).getTotalLength?.() ?? 283
+          gsap.set(ring, { strokeDasharray: circumference, strokeDashoffset: circumference })
+          masterTl.to(ring, {
+            strokeDashoffset: 0,
+            duration: 2,
+            ease: 'power2.inOut',
+          }, '-=1')
+        }
+
+        // Number scramble decode effect
+        if (number) {
+          masterTl.fromTo(number, {
+            opacity: 0,
+            scale: 0.5,
+            filter: 'blur(10px)',
+          }, {
+            opacity: 1,
+            scale: 1,
+            filter: 'blur(0px)',
+            duration: 1.2,
+            ease: 'back.out(1.7)',
+          }, '-=1.5')
+        }
+
+        // Suffix slide in
+        if (suffix) {
+          masterTl.from(suffix, {
+            y: 30,
+            opacity: 0,
+            duration: 0.6,
+            ease: 'power3.out',
+          }, '-=0.8')
+        }
+
+        // Label fade up
+        if (label) {
+          masterTl.from(label, {
+            y: 20,
+            opacity: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+          }, '-=0.5')
+        }
+
+        // Icon glow pulse
+        if (icon) {
+          masterTl.fromTo(icon, {
+            opacity: 0,
+            scale: 0,
+          }, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            ease: 'back.out(2)',
+          }, '-=1')
+        }
+
+        // Decorative line sweep
+        if (deco) {
+          masterTl.fromTo(deco, {
+            scaleX: 0,
+            transformOrigin: 'left center',
+          }, {
+            scaleX: 1,
+            duration: 0.8,
+            ease: 'power4.inOut',
+          }, '-=0.6')
+        }
+      })
+
+      // ─── Scene 3: Giant background numbers parallax ───
+      masterTl.to('.stats-giant-1', {
+        x: -200,
+        y: -80,
+        opacity: 0.08,
+        duration: 3,
+        ease: 'none',
+      }, 0)
+      masterTl.to('.stats-giant-2', {
+        x: 150,
+        y: 60,
+        opacity: 0.06,
+        duration: 3,
+        ease: 'none',
+      }, 0.5)
+
+      // ─── Scene 4: Bottom gold line + fade out on exit ───
+      masterTl.from('.stats-bottom-line', {
+        scaleX: 0,
+        duration: 1.5,
+        ease: 'power4.inOut',
+      }, '-=1')
+
+      // Floating decorative elements parallax on scroll
+      gsap.to('.stats-float-1', {
+        y: -120,
+        rotation: 45,
+        ease: 'none',
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 70%',
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${totalScroll}`,
+          scrub: 1,
+        },
+      })
+      gsap.to('.stats-float-2', {
+        y: -80,
+        rotation: -30,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${totalScroll}`,
+          scrub: 1,
+        },
+      })
+      gsap.to('.stats-float-3', {
+        y: -150,
+        x: 50,
+        rotation: 60,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${totalScroll}`,
+          scrub: 1,
         },
       })
     },
     { scope: sectionRef }
   )
 
+  // Progress percentages for rings (normalized to 0-100)
+  const progressValues = [85, 60, 98, 65]
+
   return (
-    <section ref={sectionRef} id="chiffres" className="bg-noir-light py-28 lg:py-40 relative overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <SectionHeader
-          label="Performance"
-          title="Nos Chiffres"
-          description="Des résultats qui parlent d'eux-mêmes."
-        />
+    <section
+      ref={sectionRef}
+      id="chiffres"
+      className="bg-noir-light relative overflow-hidden"
+      style={{ minHeight: '100vh' }}
+    >
+      {/* Giant background numbers — cinematic watermark */}
+      <div className="stats-giant-1 absolute -top-20 -left-10 font-serif text-[30rem] lg:text-[45rem] font-bold text-cream/[0.03] leading-none select-none pointer-events-none will-change-transform">
+        25
+      </div>
+      <div className="stats-giant-2 absolute -bottom-40 -right-10 font-serif text-[20rem] lg:text-[35rem] font-bold text-gold/[0.04] leading-none select-none pointer-events-none will-change-transform">
+        98
+      </div>
 
-        <div className="stats-gold-line w-full h-px bg-gold/20 mb-0 origin-left" />
+      {/* Floating decorative elements */}
+      <div className="stats-float-1 absolute top-[15%] right-[8%] w-32 h-32 border border-gold/10 rotate-45 will-change-transform hidden lg:block" />
+      <div className="stats-float-2 absolute bottom-[20%] left-[5%] w-20 h-20 border border-cream/5 rounded-full will-change-transform hidden lg:block" />
+      <div className="stats-float-3 absolute top-[60%] right-[25%] w-2 h-2 bg-gold/20 rounded-full will-change-transform hidden lg:block" />
+      <div className="stats-float-3 absolute top-[40%] left-[15%] w-1 h-1 bg-gold/30 rounded-full will-change-transform hidden lg:block" />
 
-        <div className="grid grid-cols-2 lg:grid-cols-4">
+      {/* Vertical decorative lines */}
+      <div className="absolute top-0 left-[25%] w-px h-full bg-gradient-to-b from-transparent via-gold/10 to-transparent hidden lg:block" />
+      <div className="absolute top-0 right-[33%] w-px h-full bg-gradient-to-b from-transparent via-noir-mid/30 to-transparent hidden lg:block" />
+
+      <div ref={trackRef} className="max-w-[1400px] mx-auto px-6 lg:px-12 py-20 lg:py-32">
+        {/* Section header — cinematic reveal */}
+        <div className="mb-16 lg:mb-24">
+          <span className="stats-label block font-sans text-[10px] tracking-[0.5em] uppercase text-gold mb-6">
+            Performance
+          </span>
+          <h2 className="stats-title-line font-serif text-6xl sm:text-8xl lg:text-9xl font-bold text-cream leading-[0.85]">
+            Nos
+          </h2>
+          <h2 className="stats-title-line font-serif text-6xl sm:text-8xl lg:text-9xl font-bold italic text-gold leading-[0.85]">
+            Chiffres
+          </h2>
+          <p className="stats-desc font-sans text-sm lg:text-base text-warm-gray/50 max-w-md mt-6 leading-relaxed">
+            Des résultats qui parlent d&apos;eux-mêmes. Chaque nombre raconte une histoire d&apos;excellence et de confiance.
+          </p>
+        </div>
+
+        {/* Gold horizontal line */}
+        <div className="stats-horiz-line w-full h-px bg-gradient-to-r from-gold/40 via-gold to-gold/40 mb-16 lg:mb-20 origin-left" />
+
+        {/* Stats grid — kinetic cards with SVG rings */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {stats.map((stat, i) => (
-            <StatCard key={stat.label} stat={stat} index={i} />
+            <KineticStatCard
+              key={stat.label}
+              stat={stat}
+              index={i}
+              progress={progressValues[i]}
+            />
           ))}
         </div>
 
-        <div className="stats-gold-line w-full h-px bg-gold/20 mt-0 origin-left" />
-      </div>
+        {/* Bottom gold line */}
+        <div className="stats-bottom-line w-full h-px bg-gradient-to-r from-gold/40 via-gold to-gold/40 mt-16 lg:mt-20 origin-left" />
 
-      {/* Giant background text */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-serif text-[25rem] font-bold text-noir-mid/15 leading-none select-none pointer-events-none hidden xl:block">
-        25
+        {/* Bottom tagline */}
+        <div className="mt-10 text-center">
+          <span className="font-sans text-[10px] tracking-[0.5em] uppercase text-warm-gray/30">
+            Excellence depuis 1999 — Dakar, Sénégal
+          </span>
+        </div>
       </div>
     </section>
   )
 }
 
-function StatCard({
+function KineticStatCard({
   stat,
   index,
+  progress,
 }: {
   stat: (typeof stats)[0]
   index: number
+  progress: number
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref)
-  const count = useCounter(stat.value, 2.5, isInView)
+  const count = useCounter(stat.value, 3, isInView)
+
+  // SVG ring calculations
+  const radius = 58
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (progress / 100) * circumference
 
   return (
     <div
       ref={ref}
-      className="stat-item relative py-14 px-6 text-center group cursor-default border-r border-noir-mid last:border-r-0"
+      className="kinetic-stat relative group cursor-default"
     >
-      <stat.icon
-        size={24}
-        className="mx-auto mb-4 text-gold/30 group-hover:text-gold transition-colors duration-500"
-      />
-      <div className="font-serif text-5xl lg:text-7xl font-bold text-cream group-hover:text-gold transition-colors duration-700 mb-2">
-        {count}
-        <span className="text-gold/60 text-4xl lg:text-5xl">
-          {stat.suffix}
-        </span>
+      <div className="relative border border-noir-mid/50 p-8 lg:p-10 hover:border-gold/20 transition-colors duration-700 overflow-hidden">
+        {/* Background glow on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gold/0 via-gold/0 to-gold/0 group-hover:from-gold/[0.03] group-hover:via-transparent group-hover:to-gold/[0.02] transition-all duration-700" />
+
+        {/* Index number watermark */}
+        <div className="absolute -top-3 -right-2 font-serif text-[8rem] lg:text-[10rem] font-bold text-cream/[0.02] leading-none select-none pointer-events-none group-hover:text-gold/[0.04] transition-colors duration-1000">
+          {String(index + 1).padStart(2, '0')}
+        </div>
+
+        {/* SVG Progress Ring */}
+        <div className="relative w-32 h-32 lg:w-36 lg:h-36 mx-auto mb-6">
+          <svg className="w-full h-full -rotate-90" viewBox="0 0 128 128">
+            {/* Background ring */}
+            <circle
+              cx="64"
+              cy="64"
+              r={radius}
+              fill="none"
+              stroke="rgba(202,138,4,0.08)"
+              strokeWidth="2"
+            />
+            {/* Progress ring */}
+            <circle
+              className="progress-ring-circle"
+              cx="64"
+              cy="64"
+              r={radius}
+              fill="none"
+              stroke="rgba(202,138,4,0.6)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              strokeDashoffset={offset}
+              style={{
+                transition: 'stroke-dashoffset 0.1s',
+                filter: 'drop-shadow(0 0 6px rgba(202,138,4,0.3))',
+              }}
+            />
+          </svg>
+          {/* Icon centered in ring */}
+          <div className="stat-icon-glow absolute inset-0 flex items-center justify-center">
+            <stat.icon
+              size={28}
+              className="text-gold/50 group-hover:text-gold transition-colors duration-500"
+            />
+          </div>
+        </div>
+
+        {/* Number with suffix */}
+        <div className="text-center mb-3">
+          <span className="stat-number font-serif text-5xl lg:text-6xl font-bold text-cream group-hover:text-gold transition-colors duration-700 inline-block">
+            {count}
+          </span>
+          <span className="stat-suffix font-serif text-3xl lg:text-4xl font-bold text-gold/50 group-hover:text-gold/80 transition-colors duration-700">
+            {stat.suffix}
+          </span>
+        </div>
+
+        {/* Label */}
+        <div className="stat-label-text font-sans text-[10px] tracking-[0.3em] uppercase text-warm-gray/40 group-hover:text-warm-gray/70 text-center transition-colors duration-500">
+          {stat.label}
+        </div>
+
+        {/* Decorative bottom line */}
+        <div className="stat-deco-line w-8 h-px bg-gold/30 group-hover:bg-gold group-hover:w-full mx-auto mt-4 transition-all duration-700" />
+
+        {/* Corner accents */}
+        <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-gold/0 group-hover:border-gold/30 transition-colors duration-700" />
+        <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-gold/0 group-hover:border-gold/30 transition-colors duration-700" />
       </div>
-      <div className="font-sans text-[10px] tracking-[0.3em] uppercase text-warm-gray/40 group-hover:text-warm-gray transition-colors duration-500">
-        {stat.label}
-      </div>
-      {/* Bottom gold accent on hover */}
-      <div className="absolute bottom-0 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-700" />
     </div>
   )
 }

@@ -204,6 +204,34 @@ body {
   transition: border-color 0.7s ease;
 }
 
+/* ─── Kinetic Data Cathedral — Stats Section ─────────────── */
+.kinetic-stat {
+  will-change: transform, opacity, clip-path;
+}
+
+.kinetic-stat .progress-ring-circle {
+  will-change: stroke-dashoffset;
+}
+
+.stat-number {
+  will-change: transform, opacity, filter;
+}
+
+.stat-icon-glow {
+  will-change: transform, opacity;
+}
+
+.stat-deco-line {
+  will-change: transform;
+  transform-origin: left center;
+}
+
+/* Stats giant numbers */
+.stats-giant-1,
+.stats-giant-2 {
+  will-change: transform, opacity;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    Sterling Gate Kinetic Navigation — Full Component Styles
    ═══════════════════════════════════════════════════════════════ */
