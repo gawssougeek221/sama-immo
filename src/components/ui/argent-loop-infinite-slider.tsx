@@ -138,7 +138,7 @@ export function ArgentLoopInfiniteSlider() {
           const img = el.querySelector(".project-parallax-img") as HTMLElement | null;
           if (img) {
             const parallaxY = offset * -0.15 * window.innerHeight;
-            img.style.transform = `translateY(${parallaxY}px) scale(1.5)`;
+            img.style.transform = `translateY(${parallaxY}px) scale(1.2)`;
           }
         });
 
@@ -151,7 +151,7 @@ export function ArgentLoopInfiniteSlider() {
           const img = el.querySelector("img") as HTMLElement | null;
           if (img) {
             const parallaxY = offset * -0.1 * 280;
-            img.style.transform = `translateY(${parallaxY}px) scale(1.5)`;
+            img.style.transform = `translateY(${parallaxY}px) scale(1.15)`;
           }
         });
 
@@ -176,6 +176,7 @@ export function ArgentLoopInfiniteSlider() {
 
   return (
     <section
+      id="proprietes"
       ref={sectionRef}
       className="relative w-full h-screen overflow-hidden bg-noir"
     >
@@ -225,6 +226,8 @@ export function ArgentLoopInfiniteSlider() {
               className="project-parallax-img"
               src={data.image}
               alt={data.title}
+              loading={i < 2 ? "eager" : "lazy"}
+              draggable={false}
             />
             {/* Overlay gradient */}
             <div className="project-overlay" />

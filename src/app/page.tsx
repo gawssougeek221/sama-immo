@@ -471,11 +471,7 @@ function MarqueeBand() {
 
 // ─── PROPERTY SECTION — ARGENT LOOP INFINITE SLIDER ───────
 function PropertySection() {
-  return (
-    <section id="proprietes">
-      <ArgentLoopInfiniteSlider />
-    </section>
-  )
+  return <ArgentLoopInfiniteSlider />
 }
 
 // ─── STATS — KINETIC DATA CATHEDRAL ────────────────────────
