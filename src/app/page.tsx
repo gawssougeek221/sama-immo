@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import { Component as SterlingGateNav } from '@/components/ui/sterling-gate-kinetic-navigation'
 import { TestimonialsColumn } from '@/components/ui/testimonials-columns-1'
-import { ArgentLoopInfiniteSlider } from '@/components/ui/argent-loop-infinite-slider'
+import { Component as ParallaxFeatureSection } from '@/components/ui/parallax-scroll-feature-section'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -469,9 +469,9 @@ function MarqueeBand() {
   )
 }
 
-// ─── PROPERTY SECTION — ARGENT LOOP INFINITE SLIDER ───────
+// ─── PROPERTY SECTION — PARALLAX SCROLL FEATURE ─────────
 function PropertySection() {
-  return <ArgentLoopInfiniteSlider />
+  return <ParallaxFeatureSection />
 }
 
 // ─── STATS — KINETIC DATA CATHEDRAL ────────────────────────
