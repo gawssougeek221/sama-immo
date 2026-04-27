@@ -12,7 +12,6 @@ import {
   Phone,
   Mail,
   ArrowRight,
-  Star,
   ChevronDown,
   Diamond,
   Shield,
@@ -20,6 +19,7 @@ import {
   Clock,
 } from 'lucide-react'
 import { Component as SterlingGateNav } from '@/components/ui/sterling-gate-kinetic-navigation'
+import { TestimonialsColumn } from '@/components/ui/testimonials-columns-1'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -97,27 +97,6 @@ const stats = [
   { value: 25, suffix: '', label: "Ans d'Excellence", icon: Clock, hoverColor: '#F59E0B' },        // Amber
   { value: 98, suffix: '%', label: 'Clients Satisfaits', icon: Shield, hoverColor: '#3B82F6' },    // Sapphire
   { value: 500, suffix: 'M+', label: "CA Annuel (CFA)", icon: TrendingUp, hoverColor: '#EF4444' }, // Ruby
-]
-
-const testimonials = [
-  {
-    name: 'Aminata Diallo',
-    role: 'Avocate',
-    text: "LuxeProperty a trouvé la villa de nos rêves à Ngor en moins de deux semaines. Un service irréprochable, une attention aux détails remarquable.",
-    rating: 5,
-  },
-  {
-    name: 'Jean-Pierre Martin',
-    role: "Directeur d'entreprise",
-    text: "Professionnalisme et expertise caractérisent cette agence. L'achat de notre penthouse au Plateau s'est déroulé sans le moindre stress.",
-    rating: 5,
-  },
-  {
-    name: 'Fatou Sow',
-    role: 'Médecin',
-    text: "Grâce à LuxeProperty, nous avons découvert une résidence exceptionnelle à Mermoz. L'équipe est à l'écoute et d'un conseil avisé.",
-    rating: 5,
-  },
 ]
 
 // ─── HOOKS ─────────────────────────────────────────────────
@@ -1121,7 +1100,7 @@ function KineticStatCard({
   )
 }
 
-// ─── TESTIMONIALS WITH STACKED CARDS ───────────────────────
+// ─── TESTIMONIALS — INFINITE SCROLLING COLUMNS ────────────
 function TestimonialsSection() {
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -1139,23 +1118,71 @@ function TestimonialsSection() {
           start: 'top 60%',
         },
       })
-
-      // Cards reveal with rotation
-      gsap.from('.testi-card', {
-        y: 100,
-        rotation: 3,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 50%',
-        },
-      })
     },
     { scope: sectionRef }
   )
+
+  // Testimonials data with Unsplash avatar images
+  const columnTestimonials = [
+    {
+      text: "LuxeProperty a trouvé la villa de nos rêves aux Almadies en moins de deux semaines. Un service irréprochable, une attention aux détails remarquable.",
+      image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=80&h=80&fit=crop&crop=face",
+      name: "Aminata Diallo",
+      role: "Avocate",
+    },
+    {
+      text: "Professionnalisme et expertise caractérisent cette agence. L'achat de notre penthouse au Plateau s'est déroulé sans le moindre stress.",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
+      name: "Jean-Pierre Martin",
+      role: "Directeur d'entreprise",
+    },
+    {
+      text: "Grâce à LuxeProperty, nous avons découvert une résidence exceptionnelle à Mermoz. L'équipe est à l'écoute et d'un conseil avisé.",
+      image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=face",
+      name: "Fatou Sow",
+      role: "Médecin",
+    },
+    {
+      text: "La connaissance du marché dakarois est impressionnante. Ils ont identifié la villa parfaite pour notre famille avant même qu'elle soit listée.",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face",
+      name: "Moussa Ba",
+      role: "Architecte",
+    },
+    {
+      text: "Un accompagnement sur mesure du début à la fin. Leur réseau de partenaires notariés et juridiques a simplifié toutes les démarches.",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face",
+      name: "Isabelle Dupont",
+      role: "Avocate d'affaires",
+    },
+    {
+      text: "J'ai investi dans trois propriétés grâce à LuxeProperty. Chaque fois, le retour sur investissement a dépassé mes attentes les plus optimistes.",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
+      name: "Oumar Sy",
+      role: "Investisseur immobilier",
+    },
+    {
+      text: "La discrétion et le professionnalisme de l'équipe sont remarquables. Ils comprennent les exigences d'une clientèle exigeante et y répondent avec élégance.",
+      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&h=80&fit=crop&crop=face",
+      name: "Mariama Ndiaye",
+      role: "Chef d'entreprise",
+    },
+    {
+      text: "Notre villa à Ngor est un bijou. LuxeProperty a su capturer notre vision et traduire nos envies en une propriété qui nous ressemble véritablement.",
+      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=80&h=80&fit=crop&crop=face",
+      name: "Philippe Leclerc",
+      role: "Consul honoraire",
+    },
+    {
+      text: "De la première visite à la remise des clés, tout a été fluide. L'équipe est réactive, disponible et d'une courtoisie exemplaire. Je recommande vivement.",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face",
+      name: "Aïssatou Diop",
+      role: "Directrice financière",
+    },
+  ]
+
+  const firstColumn = columnTestimonials.slice(0, 3)
+  const secondColumn = columnTestimonials.slice(3, 6)
+  const thirdColumn = columnTestimonials.slice(6, 9)
 
   return (
     <section
@@ -1163,10 +1190,14 @@ function TestimonialsSection() {
       id="temoignages"
       className="bg-noir py-28 lg:py-44 relative overflow-hidden"
     >
+      {/* Decorative vertical lines */}
+      <div className="absolute top-0 left-[20%] w-px h-full bg-gradient-to-b from-transparent via-gold/8 to-transparent hidden lg:block" />
+      <div className="absolute top-0 right-[20%] w-px h-full bg-gradient-to-b from-transparent via-gold/5 to-transparent hidden lg:block" />
+
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        {/* Section title as large text */}
-        <div className="mb-20 lg:mb-28">
-          <span className="testi-title-line block font-sans text-[10px] tracking-[0.5em] uppercase text-gold mb-4">
+        {/* Section header */}
+        <div className="mb-16 lg:mb-24">
+          <span className="testi-title-line block font-sans text-[10px] tracking-[0.5em] uppercase text-gold mb-6">
             Témoignages
           </span>
           <h2 className="testi-title-line font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-cream leading-[0.9]">
@@ -1175,50 +1206,26 @@ function TestimonialsSection() {
           <h2 className="testi-title-line font-serif text-5xl sm:text-7xl lg:text-8xl font-bold text-gold italic leading-[0.9]">
             Font Confiance
           </h2>
+          <p className="testi-title-line font-sans text-sm lg:text-base text-warm-gray/40 max-w-lg mt-6 leading-relaxed">
+            Découvrez les témoignages de ceux qui nous ont fait confiance. Chaque histoire reflète notre engagement envers l&apos;excellence.
+          </p>
+
+          {/* Gold line */}
+          <div className="testi-title-line w-24 h-px bg-gold mt-8 origin-left" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {testimonials.map((t, i) => (
-            <div
-              key={t.name}
-              className="testi-card border border-noir-mid p-8 lg:p-10 hover:border-gold/30 transition-all duration-700 group relative"
-            >
-              <div className="font-serif text-8xl text-gold/5 absolute top-2 right-6 leading-none select-none">
-                &ldquo;
-              </div>
+        {/* Infinite scrolling columns */}
+        <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] max-h-[740px] overflow-hidden">
+          <TestimonialsColumn testimonials={firstColumn} duration={18} />
+          <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={22} />
+          <TestimonialsColumn testimonials={thirdColumn} className="hidden lg:block" duration={20} />
+        </div>
 
-              <div className="flex gap-1 mb-6">
-                {Array.from({ length: t.rating }).map((_, j) => (
-                  <Star
-                    key={j}
-                    size={12}
-                    className="text-gold fill-gold"
-                  />
-                ))}
-              </div>
-
-              <p className="font-sans text-sm text-warm-gray/70 leading-relaxed mb-10 relative z-10">
-                &ldquo;{t.text}&rdquo;
-              </p>
-
-              <div className="border-t border-noir-mid pt-6 flex items-center gap-4">
-                {/* Avatar circle */}
-                <div className="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center flex-shrink-0">
-                  <span className="font-serif text-sm font-bold text-gold">
-                    {t.name.charAt(0)}
-                  </span>
-                </div>
-                <div>
-                  <div className="font-serif text-base font-bold text-cream">
-                    {t.name}
-                  </div>
-                  <div className="font-sans text-[10px] tracking-[0.2em] uppercase text-gold/50 mt-0.5">
-                    {t.role}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+        {/* Bottom decorative tagline */}
+        <div className="mt-12 text-center">
+          <span className="font-sans text-[10px] tracking-[0.5em] uppercase text-warm-gray/25">
+            La confiance se mérite — l&apos;excellence se prouve
+          </span>
         </div>
       </div>
     </section>
