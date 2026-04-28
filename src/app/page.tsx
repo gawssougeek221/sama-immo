@@ -148,9 +148,39 @@ function Preloader() {
   useGSAP(
     () => {
       const tl = gsap.timeline()
+
+      // Morphing house icon: draw the paths
+      tl.from('.preloader-house-path', {
+        strokeDashoffset: (i: number, el: SVGPathElement | SVGLineElement) => {
+          const len = el.getTotalLength ? el.getTotalLength() : 100
+          gsap.set(el, { strokeDasharray: len })
+          return len
+        },
+        stagger: 0.12,
+        duration: 1.2,
+        ease: 'power2.inOut',
+      }, 0)
+
+      // Fade in brand name
+      tl.from('.preloader-brand', {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+        ease: 'power3.out',
+      }, 0.6)
+
+      // Fade in Keur'Geek credit
+      tl.from('.preloader-credit', {
+        opacity: 0,
+        y: 10,
+        duration: 0.6,
+        ease: 'power2.out',
+      }, 1.0)
+
+      // Counter
       tl.from('.preloader-count', {
         textContent: 0,
-        duration: 1.8,
+        duration: 2.2,
         ease: 'power2.inOut',
         snap: { textContent: 1 },
         onUpdate: function () {
@@ -160,17 +190,37 @@ function Preloader() {
           const el = ref.current?.querySelector('.preloader-count')
           if (el) el.textContent = String(progress)
         },
-      })
+      }, 0)
+
+      // Progress line
       tl.to('.preloader-line-fill', {
         scaleX: 1,
-        duration: 1.8,
+        duration: 2.2,
         ease: 'power2.inOut',
       }, 0)
+
+      // Morph icon to filled state
+      tl.to('.preloader-house-path', {
+        fill: '#CA8A04',
+        fillOpacity: 0.15,
+        duration: 0.8,
+        ease: 'power2.inOut',
+        stagger: 0.05,
+      }, 1.4)
+
+      // Scale up icon slightly
+      tl.to('.preloader-house-icon', {
+        scale: 1.08,
+        duration: 0.5,
+        ease: 'back.out(1.7)',
+      }, 1.8)
+
+      // Exit: split top and bottom
       tl.to('.preloader-top', {
         yPercent: -100,
         duration: 0.8,
         ease: 'power4.inOut',
-      }, '+=0.2')
+      }, '+=0.3')
       tl.to('.preloader-bottom', {
         yPercent: 100,
         duration: 0.8,
@@ -183,15 +233,44 @@ function Preloader() {
 
   return (
     <div ref={ref} className="fixed inset-0 z-[9999] bg-noir">
-      <div className="preloader-top absolute top-0 left-0 right-0 h-1/2 bg-noir flex items-end justify-center pb-4">
+      <div className="preloader-top absolute top-0 left-0 right-0 h-1/2 bg-noir flex flex-col items-end justify-center pb-4 px-8 lg:px-16">
         <div className="font-serif text-8xl font-bold text-cream">
           <span className="preloader-count">0</span>
           <span className="text-gold">%</span>
         </div>
       </div>
-      <div className="preloader-bottom absolute bottom-0 left-0 right-0 h-1/2 bg-noir flex items-start justify-center pt-4">
-        <div className="w-64 h-px bg-noir-mid relative overflow-hidden">
+      <div className="preloader-bottom absolute bottom-0 left-0 right-0 h-1/2 bg-noir flex flex-col items-center justify-start pt-8 gap-6">
+        {/* Morphing House Icon */}
+        <div className="preloader-house-icon">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Roof */}
+            <path className="preloader-house-path" d="M32 8L4 32H14V56H50V32H60L32 8Z" stroke="#CA8A04" strokeWidth="1.5" fill="none" />
+            {/* Door */}
+            <path className="preloader-house-path" d="M26 56V40H38V56" stroke="#CA8A04" strokeWidth="1.5" fill="none" />
+            {/* Left window */}
+            <path className="preloader-house-path" d="M18 36H24V42H18V36Z" stroke="#CA8A04" strokeWidth="1" fill="none" />
+            {/* Right window */}
+            <path className="preloader-house-path" d="M40 36H46V42H40V36Z" stroke="#CA8A04" strokeWidth="1" fill="none" />
+            {/* Chimney */}
+            <path className="preloader-house-path" d="M44 20V14H48V24" stroke="#CA8A04" strokeWidth="1" fill="none" />
+          </svg>
+        </div>
+
+        {/* Brand name */}
+        <div className="preloader-brand flex items-center gap-2">
+          <span className="font-serif text-2xl font-bold text-cream tracking-wider">SAMA</span>
+          <span className="font-sans text-sm font-semibold text-gold tracking-[0.3em] uppercase border-l border-gold/30 pl-2">IMMO</span>
+        </div>
+
+        {/* Progress line */}
+        <div className="w-48 h-px bg-noir-mid relative overflow-hidden">
           <div className="preloader-line-fill absolute inset-0 bg-gold origin-left scale-x-0" />
+        </div>
+
+        {/* Keur'Geek credit */}
+        <div className="preloader-credit flex items-center gap-2">
+          <span className="font-sans text-[9px] tracking-[0.2em] uppercase text-warm-gray/30">by</span>
+          <span className="font-serif text-xs font-bold text-gold/50">Keur&apos;Geek Digital</span>
         </div>
       </div>
     </div>
