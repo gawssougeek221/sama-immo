@@ -18,6 +18,7 @@ import {
 import { Component as SterlingGateNav } from '@/components/ui/sterling-gate-kinetic-navigation'
 import { TestimonialsColumn } from '@/components/ui/testimonials-columns-1'
 import { Component as ParallaxFeatureSection } from '@/components/ui/parallax-scroll-feature-section'
+import { VirtualTourSection } from '@/components/ui/virtual-tour-section'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
@@ -1548,6 +1549,7 @@ export default function Home() {
         <PropertySection />
         <StatsSection />
         <TestimonialsSection />
+        <VirtualTourSection />
         <ContactSection />
       </main>
       <Footer />
