@@ -71,12 +71,13 @@ function MagneticCursor() {
   const dotRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // Skip entirely on touch devices — no need for custom cursor
+    if (window.matchMedia('(pointer: coarse)').matches) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
     const cursor = cursorRef.current
     const dot = dotRef.current
     if (!cursor || !dot) return
-
-    // Only show on non-touch devices
-    if (window.matchMedia('(pointer: coarse)').matches) return
 
     cursor.style.display = 'block'
     dot.style.display = 'block'
@@ -434,7 +435,7 @@ function HeroSection() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           onCanPlay={(e) => {
             // Fade in video, fade out poster
             const video = e.currentTarget
@@ -456,7 +457,7 @@ function HeroSection() {
       <div className="absolute top-[20%] right-[10%] w-px h-60 bg-gradient-to-b from-transparent via-gold/30 to-transparent hidden lg:block" />
       <div className="absolute bottom-[20%] left-[6%] w-px h-40 bg-gradient-to-b from-transparent via-gold/15 to-transparent hidden lg:block" />
 
-      <div className="hero-content relative z-10 h-full flex flex-col justify-end pb-24 lg:pb-36 px-6 lg:px-16 max-w-[1400px] mx-auto">
+      <div className="hero-content relative z-10 h-full flex flex-col justify-end pb-20 sm:pb-24 lg:pb-36 px-5 sm:px-6 lg:px-16 max-w-[1400px] mx-auto">
         <div className="max-w-5xl">
           {/* Location label */}
           <div className="hero-meta flex items-center gap-3 mb-8">
@@ -608,7 +609,9 @@ function StatsSection() {
       if (!section || !track) return
 
       // Pin the entire section — scroll drives the animation
-      const totalScroll = window.innerHeight * 4
+      // Reduce scroll distance on mobile for better UX
+      const isMobile = window.innerWidth < 768
+      const totalScroll = isMobile ? window.innerHeight * 1.5 : window.innerHeight * 4
 
       // Master timeline driven by scroll
       const masterTl = gsap.timeline({

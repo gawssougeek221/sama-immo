@@ -177,6 +177,15 @@ export function VirtualTourSection() {
     setMousePos({ x, y })
   }, [])
 
+  // Touch move for panoramic effect on mobile
+  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    if (!panoramaRef.current || !e.touches[0]) return
+    const rect = panoramaRef.current.getBoundingClientRect()
+    const x = (e.touches[0].clientX - rect.left) / rect.width
+    const y = (e.touches[0].clientY - rect.top) / rect.height
+    setMousePos({ x, y })
+  }, [])
+
   // Navigate to room
   const navigateToRoom = (roomId: string) => {
     const room = selectedProperty.rooms.find((r) => r.id === roomId)
@@ -266,9 +275,12 @@ export function VirtualTourSection() {
               ref={panoramaRef}
               className="absolute inset-0 overflow-hidden"
               onMouseMove={handleMouseMove}
+              onTouchMove={handleTouchMove}
               onMouseDown={() => setIsPanning(true)}
               onMouseUp={() => setIsPanning(false)}
               onMouseLeave={() => setIsPanning(false)}
+              onTouchStart={() => setIsPanning(true)}
+              onTouchEnd={() => setIsPanning(false)}
               style={{ cursor: isPanning ? 'grabbing' : 'grab' }}
             >
               <AnimatePresence mode="wait">
@@ -433,14 +445,14 @@ export function VirtualTourSection() {
                   exit={{ opacity: 0 }}
                   className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none"
                 >
-                  <div className="flex items-center gap-4 px-6 py-4 bg-noir/70 backdrop-blur-md border border-gold/20 rounded-lg">
+                  <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 px-5 sm:px-6 py-3 sm:py-4 bg-noir/70 backdrop-blur-md border border-gold/20 rounded-lg">
                     <Move size={18} className="text-gold/60" />
-                    <span className="font-sans text-sm text-cream/70">
-                      Déplacez la souris pour explorer
+                    <span className="font-sans text-xs sm:text-sm text-cream/70">
+                      Glissez pour explorer
                     </span>
-                    <span className="w-px h-4 bg-cream/20" />
-                    <span className="font-sans text-sm text-cream/70">
-                      Cliquez sur les points pour naviguer
+                    <span className="hidden sm:block w-px h-4 bg-cream/20" />
+                    <span className="font-sans text-xs sm:text-sm text-cream/70">
+                      Appuyez sur les points pour naviguer
                     </span>
                   </div>
                 </motion.div>

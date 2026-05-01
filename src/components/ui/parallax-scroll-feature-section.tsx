@@ -172,8 +172,8 @@ export const Component = () => {
           <div
             key={section.id}
             ref={sectionRefs[index]}
-            className={`min-h-screen flex items-center justify-center px-6 lg:px-16 xl:px-24 py-20 lg:py-0 ${
-              section.reverse ? "flex-row-reverse" : ""
+            className={`min-h-[70vh] sm:min-h-screen flex flex-col lg:flex-row items-center justify-center px-6 lg:px-16 xl:px-24 py-16 lg:py-0 ${
+              section.reverse ? "lg:flex-row-reverse" : ""
             }`}
           >
             {/* Text content */}
@@ -266,7 +266,7 @@ export const Component = () => {
                 clipPath: clipProgresses[index],
                 scale: scaleProgresses[index],
               }}
-              className="relative flex-1 max-w-lg lg:max-w-xl xl:max-w-2xl mx-8 lg:mx-16"
+              className="relative flex-1 max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto lg:mx-16 mt-8 lg:mt-0 w-full lg:w-auto"
             >
               {/* Gold border frame */}
               <div className="absolute -inset-3 border border-gold/10 pointer-events-none" />

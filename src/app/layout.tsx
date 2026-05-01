@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Jost } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -16,6 +16,13 @@ const jost = Jost({
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#0C0A09",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   title: "SAMA IMMO — Propriétés d'Exception à Dakar",
@@ -44,9 +51,7 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <head>
-        {/* Preload hero video for faster playback */}
-        <link rel="preload" href="/hero-video.mp4" as="video" />
-        {/* Preload hero poster image */}
+        {/* Preload hero poster image — lightweight, loads instantly */}
         <link rel="preload" href="/hero-background.jpg" as="image" />
       </head>
       <body
