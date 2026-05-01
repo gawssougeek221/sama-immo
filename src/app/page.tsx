@@ -400,12 +400,18 @@ function HeroSection() {
       ref={heroRef}
       className="relative h-screen overflow-hidden bg-noir"
     >
-      {/* Background with clip-path reveal */}
+      {/* Background video with clip-path reveal */}
       <div className="absolute inset-0 overflow-hidden">
-        <div
-          className="hero-bg-img absolute inset-0 bg-cover bg-center scale-110"
-          style={{ backgroundImage: "url('/hero-background.jpg')" }}
-        />
+        <video
+          className="hero-bg-img absolute inset-0 w-full h-full object-cover scale-110"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-noir/60 via-noir/40 to-noir" />
         <div className="absolute inset-0 bg-gradient-to-r from-noir/70 via-transparent to-noir/30" />
       </div>
