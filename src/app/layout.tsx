@@ -43,6 +43,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <head>
+        {/* Preload hero video for faster playback */}
+        <link rel="preload" href="/hero-video.mp4" as="video" />
+        {/* Preload hero poster image */}
+        <link rel="preload" href="/hero-background.jpg" as="image" />
+      </head>
       <body
         className={`${bodoniModa.variable} ${jost.variable} antialiased bg-stone-950 text-stone-100`}
       >

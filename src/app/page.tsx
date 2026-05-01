@@ -292,7 +292,7 @@ function HeroSection() {
       // After preloader finishes
       const tl = gsap.timeline({ delay: 2.8 })
 
-      // Clip-path reveal of background image
+      // Clip-path reveal of background container (poster + video)
       tl.fromTo(
         '.hero-bg-img',
         { clipPath: 'inset(100% 0 0 0)' },
@@ -301,6 +301,16 @@ function HeroSection() {
           duration: 1.5,
           ease: 'power4.inOut',
         }
+      )
+      tl.fromTo(
+        '.hero-video',
+        { clipPath: 'inset(100% 0 0 0)' },
+        {
+          clipPath: 'inset(0% 0 0 0)',
+          duration: 1.5,
+          ease: 'power4.inOut',
+        },
+        0
       )
 
       // Title - split by character for awwwards-style reveal
@@ -363,8 +373,19 @@ function HeroSection() {
         '-=0.2'
       )
 
-      // Parallax on scroll
+      // Parallax on scroll — applies to both poster and video
       gsap.to('.hero-bg-img', {
+        yPercent: 20,
+        scale: 1.1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      })
+      gsap.to('.hero-video', {
         yPercent: 20,
         scale: 1.1,
         ease: 'none',
@@ -400,15 +421,30 @@ function HeroSection() {
       ref={heroRef}
       className="relative h-screen overflow-hidden bg-noir"
     >
-      {/* Background video with clip-path reveal */}
+      {/* Background video with clip-path reveal + poster fallback */}
       <div className="absolute inset-0 overflow-hidden">
+        {/* Poster image shown instantly while video loads */}
+        <div
+          className="hero-bg-img absolute inset-0 bg-cover bg-center scale-110 transition-opacity duration-1000"
+          style={{ backgroundImage: "url('/hero-background.jpg')" }}
+        />
         <video
-          className="hero-bg-img absolute inset-0 w-full h-full object-cover scale-110"
+          className="hero-video absolute inset-0 w-full h-full object-cover scale-110 opacity-0 transition-opacity duration-1000"
           autoPlay
           muted
           loop
           playsInline
           preload="auto"
+          onCanPlay={(e) => {
+            // Fade in video, fade out poster
+            const video = e.currentTarget
+            video.style.opacity = '1'
+            const poster = video.parentElement?.querySelector('.hero-bg-img') as HTMLElement
+            if (poster) {
+              poster.style.opacity = '0'
+              setTimeout(() => poster.style.display = 'none', 1000)
+            }
+          }}
         >
           <source src="/hero-video.mp4" type="video/mp4" />
         </video>
